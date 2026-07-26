@@ -117,7 +117,10 @@ Role readiness depends on prior experience, project depth, and the requirements 
 ├── 04-data-engineering-and-ai
 ├── 05-cybersecurity-and-devsecops
 ├── 06-cloud-and-infrastructure
+├── 07-databases
+├── 08-SaaS-Offerings
 └── README.md
+
 
 ```
 
@@ -130,8 +133,11 @@ Role readiness depends on prior experience, project depth, and the requirements 
 * **`04-data-engineering-and-ai`** — Data pipelines, ETL/ELT workflows, relational and non-relational data modeling, ML engineering, vector search, and AI orchestration.
 * **`05-cybersecurity-and-devsecops`** — Threat modeling, security auditing, vulnerability analysis, hard secret management, identity integration, and continuous security testing.
 * **`06-cloud-and-infrastructure`** — Infrastructure as Code (IaC), container orchestration, GitOps automation, networking, observability, and self-hosted cloud platform configurations.
+* **`07-databases`** — Relational, non-relational, and specialized database systems, indexing, query optimization, schema migrations, data modeling, and Object-Relational Mapping (ORM) design patterns.
+* **`08-SaaS-Offerings`** — Integration patterns, architectural evaluation, and workflows utilizing modern cloud services and platform solutions such as Inngest (event-driven workflow orchestration), Sanity (headless CMS & structured content platform), and Neon (serverless Postgres).
 
 ---
+
 # 🛠️ Track Breakdowns & Highlights
 
 ## 1. 🏛️ Architecture
@@ -142,53 +148,53 @@ This track explores how product and business requirements are translated into te
 
 ### Core Learning Areas
 
-- Enterprise, solution, software, and platform architecture
-- Functional and non-functional requirements
-- C4 system-context, container, component, and deployment diagrams
-- Domain-Driven Design and bounded contexts
-- Modular monolith and microservice architectures
-- Event-driven and message-oriented systems
-- API-first and contract-driven design
-- Synchronous and asynchronous communication
-- Relational, document, graph, and time-series data patterns
-- Scalability, availability, resilience, and fault tolerance
-- Caching, load balancing, replication, and partitioning
-- Authentication, authorization, and trust boundaries
-- Threat modeling and secure architecture
-- Observability and operational readiness
-- Architecture Decision Records
-- Backup, restoration, and disaster recovery
+* Enterprise, solution, software, and platform architecture
+* Functional and non-functional requirements
+* C4 system-context, container, component, and deployment diagrams
+* Domain-Driven Design and bounded contexts
+* Modular monolith and microservice architectures
+* Event-driven and message-oriented systems
+* API-first and contract-driven design
+* Synchronous and asynchronous communication
+* Relational, document, graph, and time-series data patterns
+* Scalability, availability, resilience, and fault tolerance
+* Caching, load balancing, replication, and partitioning
+* Authentication, authorization, and trust boundaries
+* Threat modeling and secure architecture
+* Observability and operational readiness
+* Architecture Decision Records
+* Backup, restoration, and disaster recovery
 
 ### FOSS Tooling
 
-- **Diagramming:** Mermaid, PlantUML, diagrams.net
-- **Architecture Modeling:** Structurizr Lite
-- **Documentation:** Markdown, MkDocs, Antora
-- **API Specifications:** OpenAPI, AsyncAPI, Redoc
-- **Identity:** Keycloak
-- **Messaging:** Apache Kafka, RabbitMQ, NATS
-- **Data:** PostgreSQL, MariaDB, Valkey, Apache Cassandra
-- **Proxy and Gateway:** NGINX, Envoy, Traefik, Apache APISIX
-- **Private Cloud:** OpenStack, Apache CloudStack
+* **Diagramming:** Mermaid, PlantUML, diagrams.net
+* **Architecture Modeling:** Structurizr Lite
+* **Documentation:** Markdown, MkDocs, Antora
+* **API Specifications:** OpenAPI, AsyncAPI, Redoc
+* **Identity:** Keycloak
+* **Messaging:** Apache Kafka, RabbitMQ, NATS
+* **Data:** PostgreSQL, MariaDB, Valkey, Apache Cassandra
+* **Proxy and Gateway:** NGINX, Envoy, Traefik, Apache APISIX
+* **Private Cloud:** OpenStack, Apache CloudStack
 
 ### Featured Assets
 
-- End-to-end architectural specification for an event-driven platform.
-- C4 diagrams covering system context, containers, components, and deployment.
-- ADRs evaluating data stores, messaging systems, authentication, and deployment models.
-- OpenAPI and AsyncAPI contracts for services and events.
-- Threat model identifying assets, actors, attack surfaces, and trust boundaries.
-- Non-functional requirements covering reliability, security, privacy, and performance.
-- Capacity, resilience, backup, restoration, and disaster-recovery plans.
+* End-to-end architectural specification for an event-driven platform.
+* C4 diagrams covering system context, containers, components, and deployment.
+* ADRs evaluating data stores, messaging systems, authentication, and deployment models.
+* OpenAPI and AsyncAPI contracts for services and events.
+* Threat model identifying assets, actors, attack surfaces, and trust boundaries.
+* Non-functional requirements covering reliability, security, privacy, and performance.
+* Capacity, resilience, backup, restoration, and disaster-recovery plans.
 
 ### Roles Supported
 
-- Software Architect
-- Solution Architect
-- Junior Enterprise Architect
-- Platform Architect
-- Technical Lead
-- Systems Designer
+* Software Architect
+* Solution Architect
+* Junior Enterprise Architect
+* Platform Architect
+* Technical Lead
+* Systems Designer
 
 ---
 
@@ -200,56 +206,56 @@ This track covers the product lifecycle from discovery and problem validation th
 
 ### Core Learning Areas
 
-- Product vision and strategy
-- Customer discovery and problem validation
-- Product Requirement Documents
-- Lean product briefs
-- Personas and problem statements
-- Jobs to Be Done
-- User journeys and service blueprints
-- User story maps and acceptance criteria
-- Market and competitor analysis
-- MVP definition and release planning
-- RICE, MoSCoW, and value-versus-effort prioritization
-- Objectives and Key Results
-- Product roadmaps
-- Product analytics and experimentation
-- Accessibility and inclusive design
-- Privacy-aware product development
-- Stakeholder communication and decision records
+* Product vision and strategy
+* Customer discovery and problem validation
+* Product Requirement Documents
+* Lean product briefs
+* Personas and problem statements
+* Jobs to Be Done
+* User journeys and service blueprints
+* User story maps and acceptance criteria
+* Market and competitor analysis
+* MVP definition and release planning
+* RICE, MoSCoW, and value-versus-effort prioritization
+* Objectives and Key Results
+* Product roadmaps
+* Product analytics and experimentation
+* Accessibility and inclusive design
+* Privacy-aware product development
+* Stakeholder communication and decision records
 
 ### FOSS Tooling
 
-- **Wireframes and UI Design:** Penpot, Pencil Project
-- **Whiteboarding:** Excalidraw
-- **Planning:** OpenProject, Taiga
-- **Documentation:** Markdown, HedgeDoc, BookStack
-- **Analytics:** Matomo, Plausible Community Edition
-- **Dashboards:** Apache Superset, Metabase
-- **Surveys:** LimeSurvey
-- **Diagrams:** Mermaid, PlantUML, diagrams.net
+* **Wireframes and UI Design:** Penpot, Pencil Project
+* **Whiteboarding:** Excalidraw
+* **Planning:** OpenProject, Taiga
+* **Documentation:** Markdown, HedgeDoc, BookStack
+* **Analytics:** Matomo, Plausible Community Edition
+* **Dashboards:** Apache Superset, Metabase
+* **Surveys:** LimeSurvey
+* **Diagrams:** Mermaid, PlantUML, diagrams.net
 
 ### Featured Assets
 
-- PRD for an open-source AI-assisted learning platform.
-- Product vision connecting customer needs to strategic outcomes.
-- Personas, journey maps, and Jobs-to-Be-Done analysis.
-- Story map covering discovery, MVP, launch, and later releases.
-- RICE-based feature-prioritization model with documented assumptions.
-- Product roadmap balancing value, risk, effort, and dependencies.
-- Metrics framework for acquisition, activation, engagement, and retention.
-- Accessible Penpot wireframes and interaction prototypes.
-- Experiment plan defining hypotheses, metrics, guardrails, and success criteria.
+* PRD for an open-source AI-assisted learning platform.
+* Product vision connecting customer needs to strategic outcomes.
+* Personas, journey maps, and Jobs-to-Be-Done analysis.
+* Story map covering discovery, MVP, launch, and later releases.
+* RICE-based feature-prioritization model with documented assumptions.
+* Product roadmap balancing value, risk, effort, and dependencies.
+* Metrics framework for acquisition, activation, engagement, and retention.
+* Accessible Penpot wireframes and interaction prototypes.
+* Experiment plan defining hypotheses, metrics, guardrails, and success criteria.
 
 ### Roles Supported
 
-- Technical Product Manager
-- Associate Product Manager
-- Product Owner
-- Product Analyst
-- Platform Product Manager
-- Product Operations Specialist
-- Technical Program Coordinator
+* Technical Product Manager
+* Associate Product Manager
+* Product Owner
+* Product Analyst
+* Platform Product Manager
+* Product Operations Specialist
+* Technical Program Coordinator
 
 ---
 
@@ -261,54 +267,54 @@ This track develops practical experience in delivering complete web products. It
 
 ### Core Technologies
 
-- TypeScript and JavaScript
-- React and Next.js
-- Node.js and Express
-- HTML, CSS, and Tailwind CSS
-- REST, OpenAPI, and WebSockets
-- PostgreSQL and Prisma ORM
-- Keycloak or application-managed authentication
-- Vitest, Playwright, and Testing Library
-- Podman and Buildah
-- NGINX, Caddy, or Traefik
+* TypeScript and JavaScript
+* React and Next.js
+* Node.js and Express
+* HTML, CSS, and Tailwind CSS
+* REST, OpenAPI, and WebSockets
+* PostgreSQL, ORM frameworks (Prisma, Drizzle, TypeORM), and relational databases
+* Keycloak or application-managed authentication
+* Vitest, Playwright, and Testing Library
+* Podman and Buildah
+* NGINX, Caddy, or Traefik
 
 ### Core Learning Areas
 
-- Component-based frontend architecture
-- Responsive and accessible interface development
-- Server-side rendering and client-side interactions
-- API design, validation, pagination, and versioning
-- Relational modeling, migrations, indexing, and transactions
-- Authentication, authorization, and role-based access control
-- Secure cookies, sessions, and token handling
-- Error handling and structured logging
-- Unit, integration, API, and end-to-end testing
-- Background jobs and asynchronous processing
-- Caching and performance optimization
-- Dependency and configuration management
-- Containerized development and deployment
-- Health, readiness, and liveness checks
+* Component-based frontend architecture
+* Responsive and accessible interface development
+* Server-side rendering and client-side interactions
+* API design, validation, pagination, and versioning
+* Relational modeling, ORM abstractions, migrations, indexing, and transactions
+* Authentication, authorization, and role-based access control
+* Secure cookies, sessions, and token handling
+* Error handling and structured logging
+* Unit, integration, API, and end-to-end testing
+* Background jobs and asynchronous processing
+* Caching and performance optimization
+* Dependency and configuration management
+* Containerized development and deployment
+* Health, readiness, and liveness checks
 
 ### Featured Projects
 
-- Multi-tenant SaaS-style platform with authentication and role-based access.
-- Node.js and Express REST API backed by PostgreSQL and Prisma.
-- Responsive Next.js frontend with reusable, accessible components.
-- Registration, login, email verification, password reset, and session-revocation workflows.
-- OpenAPI-documented service with validation and integration tests.
-- Background-processing workflow using an open-source message broker.
-- Containerized environment using Podman and Compose-compatible tooling.
-- Automated build, test, scan, and deployment pipeline using Forgejo Actions or Woodpecker CI.
+* Multi-tenant SaaS-style platform with authentication and role-based access.
+* Node.js and Express REST API backed by PostgreSQL and Prisma ORM.
+* Responsive Next.js frontend with reusable, accessible components.
+* Registration, login, email verification, password reset, and session-revocation workflows.
+* OpenAPI-documented service with validation and integration tests.
+* Background-processing workflow using an open-source message broker.
+* Containerized environment using Podman and Compose-compatible tooling.
+* Automated build, test, scan, and deployment pipeline using Forgejo Actions or Woodpecker CI.
 
 ### Roles Supported
 
-- Full Stack Developer
-- Frontend Developer
-- Backend Developer
-- Node.js Developer
-- Web Application Developer
-- Junior Software Engineer
-- Application Support Engineer
+* Full Stack Developer
+* Frontend Developer
+* Backend Developer
+* Node.js Developer
+* Web Application Developer
+* Junior Software Engineer
+* Application Support Engineer
 
 ---
 
@@ -320,40 +326,40 @@ This track applies software-engineering principles to mobile environments, inclu
 
 ### Core Technologies and Concepts
 
-- React Native
-- Flutter and Dart
-- TypeScript
-- Mobile navigation and state management
-- SQLite and local persistence
-- Offline-first architecture
-- Background synchronization
-- UnifiedPush-compatible notification concepts
-- Secure local storage
-- API authentication and token handling
-- Mobile accessibility
-- Deep links and application links
-- Local diagnostics and error reporting
-- Unit, integration, and interface testing
+* React Native
+* Flutter and Dart
+* TypeScript
+* Mobile navigation and state management
+* SQLite and local persistence
+* Offline-first architecture
+* Background synchronization
+* UnifiedPush-compatible notification concepts
+* Secure local storage
+* API authentication and token handling
+* Mobile accessibility
+* Deep links and application links
+* Local diagnostics and error reporting
+* Unit, integration, and interface testing
 
 ### Featured Projects
 
-- Cross-platform mobile application with SQLite persistence.
-- Offline-first workflow with queued changes and conflict resolution.
-- Authenticated mobile client connected to a self-hosted backend.
-- Caching and retry strategies for unreliable networks.
-- Secure handling of sessions and user preferences.
-- Reusable component library with responsive and accessible controls.
-- Automated tests for navigation, state transitions, API integration, and persistence.
-- Self-hosted CI workflow for linting, testing, and producing application builds.
+* Cross-platform mobile application with SQLite persistence.
+* Offline-first workflow with queued changes and conflict resolution.
+* Authenticated mobile client connected to a self-hosted backend.
+* Caching and retry strategies for unreliable networks.
+* Secure handling of sessions and user preferences.
+* Reusable component library with responsive and accessible controls.
+* Automated tests for navigation, state transitions, API integration, and persistence.
+* Self-hosted CI workflow for linting, testing, and producing application builds.
 
 ### Roles Supported
 
-- Mobile Application Developer
-- React Native Developer
-- Flutter Developer
-- Cross-Platform Application Developer
-- Junior Mobile Engineer
-- Frontend Engineer with Mobile Focus
+* Mobile Application Developer
+* React Native Developer
+* Flutter Developer
+* Cross-Platform Application Developer
+* Junior Mobile Engineer
+* Frontend Engineer with Mobile Focus
 
 ---
 
@@ -365,54 +371,54 @@ This track covers the complete data workflow: collecting and validating data, cl
 
 ### FOSS Tooling
 
-- Python and JupyterLab
-- Pandas, Polars, and NumPy
-- Matplotlib, Seaborn, Plotly, and Altair
-- PostgreSQL, DuckDB, and SQL
-- Scikit-learn
-- PyTorch and TensorFlow
-- SciPy and Statsmodels
-- Apache Airflow or Dagster
-- DVC for data and experiment versioning
-- MLflow for experiment tracking
-- Apache Superset and Metabase
+* Python and JupyterLab
+* Pandas, Polars, and NumPy
+* Matplotlib, Seaborn, Plotly, and Altair
+* PostgreSQL, DuckDB, and SQL
+* Scikit-learn
+* PyTorch and TensorFlow
+* SciPy and Statsmodels
+* Apache Airflow or Dagster
+* DVC for data and experiment versioning
+* MLflow for experiment tracking
+* Apache Superset and Metabase
 
 ### Core Learning Areas
 
-- Data collection, profiling, and validation
-- Missing values, duplicates, outliers, and inconsistent data
-- Exploratory Data Analysis
-- Statistical analysis and hypothesis testing
-- Relational modeling and analytical SQL
-- Feature engineering and feature selection
-- Classification, regression, and clustering
-- Train, validation, and test strategies
-- Cross-validation and hyperparameter tuning
-- Model interpretation and bias analysis
-- ETL and reproducible data pipelines
-- Dashboard design and data storytelling
-- Dataset licensing, privacy, and responsible use
+* Data collection, profiling, and validation
+* Missing values, duplicates, outliers, and inconsistent data
+* Exploratory Data Analysis
+* Statistical analysis and hypothesis testing
+* Relational modeling and analytical SQL
+* Feature engineering and feature selection
+* Classification, regression, and clustering
+* Train, validation, and test strategies
+* Cross-validation and hyperparameter tuning
+* Model interpretation and bias analysis
+* ETL and reproducible data pipelines
+* Dashboard design and data storytelling
+* Dataset licensing, privacy, and responsible use
 
 ### Featured Projects
 
-- Customer-retention analysis with EDA and predictive classification.
-- Reproducible pipeline for cleaning incomplete and inconsistent data.
-- SQL analysis using joins, aggregations, CTEs, and window functions.
-- ETL workflow combining structured data from multiple sources.
-- Model-comparison report using appropriate metrics and cross-validation.
-- MLflow experiment history documenting parameters, metrics, and artifacts.
-- Interactive analytics dashboard using Apache Superset or Metabase.
-- Data-quality assessment covering completeness, consistency, validity, and bias.
+* Customer-retention analysis with EDA and predictive classification.
+* Reproducible pipeline for cleaning incomplete and inconsistent data.
+* SQL analysis using joins, aggregations, CTEs, and window functions.
+* ETL workflow combining structured data from multiple sources.
+* Model-comparison report using appropriate metrics and cross-validation.
+* MLflow experiment history documenting parameters, metrics, and artifacts.
+* Interactive analytics dashboard using Apache Superset or Metabase.
+* Data-quality assessment covering completeness, consistency, validity, and bias.
 
 ### Roles Supported
 
-- Data Analyst
-- Business Intelligence Analyst
-- Junior Data Scientist
-- Analytics Engineer
-- Junior Machine Learning Engineer
-- Data Quality Analyst
-- Reporting and Visualization Specialist
+* Data Analyst
+* Business Intelligence Analyst
+* Junior Data Scientist
+* Analytics Engineer
+* Junior Machine Learning Engineer
+* Data Quality Analyst
+* Reporting and Visualization Specialist
 
 ---
 
@@ -424,58 +430,58 @@ This track develops defensive-security skills through authorized labs and contro
 
 ### FOSS Tooling
 
-- Wireshark and tcpdump
-- Nmap
-- OWASP ZAP
-- mitmproxy
-- Greenbone/OpenVAS
-- Wazuh
-- Suricata and Zeek
-- YARA and Sigma
-- OpenSCAP and Lynis
-- Bash and Python
-- nftables
-- GnuPG and OpenSSL
+* Wireshark and tcpdump
+* Nmap
+* OWASP ZAP
+* mitmproxy
+* Greenbone/OpenVAS
+* Wazuh
+* Suricata and Zeek
+* YARA and Sigma
+* OpenSCAP and Lynis
+* Bash and Python
+* nftables
+* GnuPG and OpenSSL
 
 ### Core Learning Areas
 
-- Security principles and common threat models
-- Linux administration and host hardening
-- Network reconnaissance and service enumeration
-- Packet capture and protocol analysis
-- Web security and the OWASP Top 10
-- Vulnerability identification and remediation
-- Authentication and access-control weaknesses
-- Secure configuration and patch management
-- Centralized logging and security monitoring
-- Detection engineering with Sigma and YARA
-- Incident triage and evidence handling
-- Risk assessment and vulnerability reporting
-- Ethical testing and responsible disclosure
+* Security principles and common threat models
+* Linux administration and host hardening
+* Network reconnaissance and service enumeration
+* Packet capture and protocol analysis
+* Web security and the OWASP Top 10
+* Vulnerability identification and remediation
+* Authentication and access-control weaknesses
+* Secure configuration and patch management
+* Centralized logging and security monitoring
+* Detection engineering with Sigma and YARA
+* Incident triage and evidence handling
+* Risk assessment and vulnerability reporting
+* Ethical testing and responsible disclosure
 
 ### Featured Labs
 
-- Python utility for filtering and inspecting packet-capture files.
-- Bash scripts for automated Linux audits and remediation checks.
-- Web application assessments using OWASP ZAP.
-- Network reconnaissance and service analysis using Nmap.
-- Wireshark and Zeek investigations of suspicious traffic.
-- Host-hardening assessments using Lynis and OpenSCAP.
-- Wazuh monitoring for authentication, integrity, and system events.
-- Sigma rules for suspicious process, account, and login behavior.
-- Vulnerability reports documenting evidence, likelihood, impact, and remediation.
-- Simulated incident investigation using host, network, and application logs.
+* Python utility for filtering and inspecting packet-capture files.
+* Bash scripts for automated Linux audits and remediation checks.
+* Web application assessments using OWASP ZAP.
+* Network reconnaissance and service analysis using Nmap.
+* Wireshark and Zeek investigations of suspicious traffic.
+* Host-hardening assessments using Lynis and OpenSCAP.
+* Wazuh monitoring for authentication, integrity, and system events.
+* Sigma rules for suspicious process, account, and login behavior.
+* Vulnerability reports documenting evidence, likelihood, impact, and remediation.
+* Simulated incident investigation using host, network, and application logs.
 
 ### Roles Supported
 
-- Cybersecurity Analyst
-- SOC Analyst
-- Junior Security Engineer
-- Vulnerability Management Analyst
-- Application Security Analyst
-- Incident Response Analyst
-- Security Operations Engineer
-- Defensive Security Specialist
+* Cybersecurity Analyst
+* SOC Analyst
+* Junior Security Engineer
+* Vulnerability Management Analyst
+* Application Security Analyst
+* Incident Response Analyst
+* Security Operations Engineer
+* Defensive Security Specialist
 
 ---
 
@@ -487,93 +493,165 @@ This track connects software engineering, operations, infrastructure, and cybers
 
 ### Core Learning Areas
 
-- DevSecOps culture and shared responsibility
-- Secure Software Development Lifecycle
-- Continuous Integration and Continuous Delivery
-- Infrastructure as Code
-- Configuration management
-- GitOps and declarative deployment
-- Policy as Code
-- Secrets and identity management
-- Least privilege and Zero Trust principles
-- Container and Kubernetes security
-- Software supply-chain security
-- Reproducible builds and artifact provenance
-- Observability and Site Reliability Engineering
-- Incident response and operational readiness
-- Compliance automation and audit evidence
-- Security gates, exceptions, and risk acceptance
-- Deployment frequency, lead time, failure rate, and recovery metrics
+* DevSecOps culture and shared responsibility
+* Secure Software Development Lifecycle
+* Continuous Integration and Continuous Delivery
+* Infrastructure as Code
+* Configuration management
+* GitOps and declarative deployment
+* Policy as Code
+* Secrets and identity management
+* Least privilege and Zero Trust principles
+* Container and Kubernetes security
+* Software supply-chain security
+* Reproducible builds and artifact provenance
+* Observability and Site Reliability Engineering
+* Incident response and operational readiness
+* Compliance automation and audit evidence
+* Security gates, exceptions, and risk acceptance
+* Deployment frequency, lead time, failure rate, and recovery metrics
 
 ### FOSS Platform and CI/CD Tooling
 
-- **Source Control:** Git and Forgejo
-- **CI/CD:** Forgejo Actions, Woodpecker CI, Jenkins, Tekton
-- **Workflow Automation:** Argo Workflows
-- **Infrastructure as Code:** OpenTofu
-- **Configuration Management:** Ansible
-- **Containers:** Podman, Buildah, Skopeo
-- **Orchestration:** Kubernetes and K3s
-- **Packaging:** Helm and Kustomize
-- **GitOps:** Argo CD or Flux CD
-- **Identity:** Keycloak
-- **Secrets:** OpenBao, SOPS, Sealed Secrets
-- **Policy:** Open Policy Agent, Gatekeeper, Kyverno
-- **Artifact Storage:** Harbor
-- **Observability:** OpenTelemetry, Prometheus, Grafana, Loki
-- **Runtime Security:** Falco
-- **Infrastructure Testing:** Terratest and pytest
-- **Load Testing:** k6
+* **Source Control:** Git and Forgejo
+* **CI/CD:** Forgejo Actions, Woodpecker CI, Jenkins, Tekton
+* **Workflow Automation:** Argo Workflows
+* **Infrastructure as Code:** OpenTofu
+* **Configuration Management:** Ansible
+* **Containers:** Podman, Buildah, Skopeo
+* **Orchestration:** Kubernetes and K3s
+* **Packaging:** Helm and Kustomize
+* **GitOps:** Argo CD or Flux CD
+* **Identity:** Keycloak
+* **Secrets:** OpenBao, SOPS, Sealed Secrets
+* **Policy:** Open Policy Agent, Gatekeeper, Kyverno
+* **Artifact Storage:** Harbor
+* **Observability:** OpenTelemetry, Prometheus, Grafana, Loki
+* **Runtime Security:** Falco
+* **Infrastructure Testing:** Terratest and pytest
+* **Load Testing:** k6
 
 ### FOSS Security Tooling
 
-- **Static Analysis:** OpenGrep
-- **Dependency Scanning:** OWASP Dependency-Check
-- **Secret Detection:** Gitleaks
-- **Container and Filesystem Scanning:** Trivy and Grype
-- **SBOM Generation:** Syft
-- **IaC Scanning:** Checkov
-- **Web Application Testing:** OWASP ZAP
-- **Container Signing:** Cosign
-- **Policy Enforcement:** OPA, Gatekeeper, and Kyverno
-- **Runtime Detection:** Falco
+* **Static Analysis:** OpenGrep
+* **Dependency Scanning:** OWASP Dependency-Check
+* **Secret Detection:** Gitleaks
+* **Container and Filesystem Scanning:** Trivy and Grype
+* **SBOM Generation:** Syft
+* **IaC Scanning:** Checkov
+* **Web Application Testing:** OWASP ZAP
+* **Container Signing:** Cosign
+* **Policy Enforcement:** OPA, Gatekeeper, and Kyverno
+* **Runtime Detection:** Falco
 
 ### Featured Projects and Labs
 
-- Self-hosted CI/CD pipeline with linting, tests, static analysis, dependency scanning, secret detection, and image scanning.
-- Security and quality gates that reject builds exceeding documented thresholds.
-- OpenTofu infrastructure using reusable modules, remote state, and automated validation.
-- Ansible playbooks for repeatable host configuration and system hardening.
-- Rootless container build workflow using Podman and Buildah.
-- Kubernetes deployment with namespaces, RBAC, network policies, resource limits, and security contexts.
-- GitOps continuous delivery using Argo CD or Flux CD.
-- Helm or Kustomize configuration for repeatable environment deployment.
-- SBOM generation using Syft and vulnerability analysis using Grype or Trivy.
-- Artifact signing and verification using Cosign.
-- Policy-as-code controls for infrastructure and Kubernetes workloads.
-- Secrets-management workflow using OpenBao, SOPS, or Sealed Secrets.
-- Prometheus and Grafana dashboards for application and platform telemetry.
-- OpenTelemetry instrumentation for metrics, logs, and traces.
-- Falco rules for detecting suspicious container and Kubernetes activity.
-- Rollback, backup, restoration, and incident-response exercises.
-- Capstone combining application delivery, infrastructure automation, security testing, GitOps, and runtime monitoring.
+* Self-hosted CI/CD pipeline with linting, tests, static analysis, dependency scanning, secret detection, and image scanning.
+* Security and quality gates that reject builds exceeding documented thresholds.
+* OpenTofu infrastructure using reusable modules, remote state, and automated validation.
+* Ansible playbooks for repeatable host configuration and system hardening.
+* Rootless container build workflow using Podman and Buildah.
+* Kubernetes deployment with namespaces, RBAC, network policies, resource limits, and security contexts.
+* GitOps continuous delivery using Argo CD or Flux CD.
+* Helm or Kustomize configuration for repeatable environment deployment.
+* SBOM generation using Syft and vulnerability analysis using Grype or Trivy.
+* Artifact signing and verification using Cosign.
+* Policy-as-code controls for infrastructure and Kubernetes workloads.
+* Secrets-management workflow using OpenBao, SOPS, or Sealed Secrets.
+* Prometheus and Grafana dashboards for application and platform telemetry.
+* OpenTelemetry instrumentation for metrics, logs, and traces.
+* Falco rules for detecting suspicious container and Kubernetes activity.
+* Rollback, backup, restoration, and incident-response exercises.
+* Capstone combining application delivery, infrastructure automation, security testing, GitOps, and runtime monitoring.
 
 ### Roles Supported
 
-- DevOps Engineer
-- DevSecOps Engineer
-- Platform Engineer
-- Site Reliability Engineer
-- Infrastructure Automation Engineer
-- Cloud-Native Engineer
-- Kubernetes Engineer
-- Build and Release Engineer
-- CI/CD Engineer
-- Platform Security Engineer
+* DevOps Engineer
+* DevSecOps Engineer
+* Platform Engineer
+* Site Reliability Engineer
+* Infrastructure Automation Engineer
+* Cloud-Native Engineer
+* Kubernetes Engineer
+* Build and Release Engineer
+* CI/CD Engineer
+* Platform Security Engineer
 
 ---
 
-## 8. 🤖 Artificial Intelligence & Generative AI
+## 8. 🗄️ Databases & ORM Patterns
+
+> **Key Focus:** Designing, modeling, optimizing, and interacting with relational and non-relational database systems using native drivers and Object-Relational Mapping (ORM) frameworks.
+
+This track explores database architecture, relational theory, document and key-value storage, indexing strategies, query execution, migrations, and object-relational mapping abstractions.
+
+### Core Learning Areas
+
+* Relational database design, normalization, and relational algebra
+* Schema migration strategies, versioning, and zero-downtime updates
+* Object-Relational Mapping (ORM) design patterns (Active Record vs. Data Mapper)
+* ORM performance optimization: avoiding N+1 queries, lazy loading vs. eager loading, and batching
+* Query optimization, indexing strategies (B-Tree, GIN, GiST), and execution plan analysis (`EXPLAIN ANALYZE`)
+* Connection pooling, transaction management, ACID properties, and isolation levels
+* NoSQL patterns: document, key-value, and column-family stores
+
+### Tooling and Technologies
+
+* **Relational Databases:** PostgreSQL, MariaDB/MySQL, SQLite
+* **ORMs & Query Builders:** Prisma, Drizzle ORM, TypeORM, SQLAlchemy
+* **Database Management & Inspection:** pgAdmin, DBeaver, Beekeeper Studio
+
+### Featured Projects
+
+* High-throughput relational schema design with automated ORM migrations and seeders.
+* ORM performance benchmarking suite contrasting Active Record vs. Data Mapper patterns and evaluating raw SQL execution vs. ORM query abstraction overhead.
+* Database migration and rollback pipeline supporting zero-downtime application deployments.
+
+### Roles Supported
+
+* Database Administrator (DBA)
+* Backend Engineer
+* Database Architect
+* Data Engineer
+
+---
+
+## 9. ☁️ SaaS Offerings & Managed Cloud Services
+
+> **Key Focus:** Integrating managed SaaS solutions—such as serverless database infrastructure, headless content platforms, and serverless background job orchestration—into modern web architectures.
+
+This track focuses on evaluating trade-offs between self-hosting and managed SaaS offerings, designing hybrid architectures, managing integration boundaries, and leveraging cloud-native vendor solutions.
+
+### Core Managed SaaS Technologies
+
+* **Serverless PostgreSQL:** Neon (branching, autoscaling, serverless Postgres)
+* **Workflow & Job Orchestration:** Inngest (event-driven durable execution, step functions, serverless background jobs)
+* **Content Platforms:** Sanity (headless CMS, structured content, GROQ/GraphQL API integration)
+
+### Core Learning Areas
+
+* Trade-off analysis: Self-Hosted vs. Managed SaaS platforms
+* Database branching, point-in-time recovery, and serverless scaling with Neon
+* Durable execution, background job orchestration, retries, and step-function flows with Inngest
+* Structured content modeling, webhooks, and live content preview workflows with Sanity
+* Managing API keys, webhooks, security boundaries, and vendor lock-in mitigation
+
+### Featured Projects
+
+* Event-driven background task pipeline powered by Inngest for async notifications and data sync.
+* Headless e-commerce/blog engine utilizing Sanity CMS for structured content delivery and live previews.
+* Multi-environment database pipeline using Neon database branching for CI/CD preview deployments.
+
+### Roles Supported
+
+* Cloud Solutions Architect
+* SaaS Engineer
+* Full Stack Developer
+* Platform Engineer
+
+---
+
+## 10. 🤖 Artificial Intelligence & Generative AI
 
 > **Key Focus:** Developing, integrating, evaluating, and securing machine-learning and generative AI systems using open-source frameworks and license-verified models.
 
@@ -581,63 +659,63 @@ This track combines machine-learning foundations with modern AI application deve
 
 ### FOSS Tooling
 
-- PyTorch and TensorFlow
-- Scikit-learn
-- Hugging Face Transformers libraries
-- llama.cpp
-- Ollama
-- vLLM
-- Haystack and LangChain
-- Qdrant and Chroma
-- MLflow
-- JupyterLab
-- FastAPI
-- OpenTelemetry
-- Guardrails and validation libraries with verified open-source licenses
+* PyTorch and TensorFlow
+* Scikit-learn
+* Hugging Face Transformers libraries
+* llama.cpp
+* Ollama
+* vLLM
+* Haystack and LangChain
+* Qdrant and Chroma
+* MLflow
+* JupyterLab
+* FastAPI
+* OpenTelemetry
+* Guardrails and validation libraries with verified open-source licenses
 
 > AI model weights and training datasets may have licenses that differ from the software used to run them. Every project should document and verify the license, permitted uses, limitations, and provenance of each model and dataset.
 
 ### Core Learning Areas
 
-- Machine-learning fundamentals
-- Neural networks and transformer concepts
-- Local model inference
-- Embeddings and semantic search
-- Vector indexing and retrieval
-- Retrieval-Augmented Generation
-- Document ingestion, parsing, and chunking
-- Prompt design and structured outputs
-- Tool calling and agent workflows
-- Model and response evaluation
-- Hallucination detection and mitigation
-- Prompt-injection and data-poisoning risks
-- Privacy and sensitive-data handling
-- Model, prompt, and dataset versioning
-- Latency, quality, and resource optimization
-- AI observability and audit logging
+* Machine-learning fundamentals
+* Neural networks and transformer concepts
+* Local model inference
+* Embeddings and semantic search
+* Vector indexing and retrieval
+* Retrieval-Augmented Generation
+* Document ingestion, parsing, and chunking
+* Prompt design and structured outputs
+* Tool calling and agent workflows
+* Model and response evaluation
+* Hallucination detection and mitigation
+* Prompt-injection and data-poisoning risks
+* Privacy and sensitive-data handling
+* Model, prompt, and dataset versioning
+* Latency, quality, and resource optimization
+* AI observability and audit logging
 
 ### Featured Projects
 
-- Local RAG assistant for querying technical documentation.
-- Document-ingestion pipeline with parsing, chunking, embeddings, indexing, retrieval, and citations.
-- Self-hosted vector search using Qdrant or Chroma.
-- AI agent capable of selecting approved tools and returning validated structured results.
-- Evaluation framework comparing relevance, groundedness, latency, and resource usage.
-- FastAPI service exposing a locally hosted language model.
-- Prompt-injection defense and untrusted-content isolation experiments.
-- AI application with authentication, conversation history, retrieval, and observability.
-- Model card documenting intended use, limitations, evaluation results, and licensing.
+* Local RAG assistant for querying technical documentation.
+* Document-ingestion pipeline with parsing, chunking, embeddings, indexing, retrieval, and citations.
+* Self-hosted vector search using Qdrant or Chroma.
+* AI agent capable of selecting approved tools and returning validated structured results.
+* Evaluation framework comparing relevance, groundedness, latency, and resource usage.
+* FastAPI service exposing a locally hosted language model.
+* Prompt-injection defense and untrusted-content isolation experiments.
+* AI application with authentication, conversation history, retrieval, and observability.
+* Model card documenting intended use, limitations, evaluation results, and licensing.
 
 ### Roles Supported
 
-- AI Application Engineer
-- Generative AI Engineer
-- Junior Machine Learning Engineer
-- Applied AI Developer
-- RAG Engineer
-- AI Platform Engineer
-- Machine Learning Operations Engineer
-- AI Solutions Developer
+* AI Application Engineer
+* Generative AI Engineer
+* Junior Machine Learning Engineer
+* Applied AI Developer
+* RAG Engineer
+* AI Platform Engineer
+* Machine Learning Operations Engineer
+* AI Solutions Developer
 
 ---
 
@@ -647,30 +725,30 @@ The capstones connect several tracks to reflect how real-world technology produc
 
 A typical capstone may include:
 
-- Product vision, personas, PRD, roadmap, and success metrics.
-- C4 diagrams, threat models, data models, and ADRs.
-- Accessible full-stack or mobile application.
-- PostgreSQL database and documented API contracts.
-- Data pipeline, analytics dashboard, or predictive model.
-- Locally hosted AI or RAG capability.
-- OpenTofu infrastructure and Ansible configuration.
-- Rootless container build using Podman.
-- Self-hosted CI/CD using Forgejo Actions or Woodpecker CI.
-- Kubernetes deployment using Helm or Kustomize.
-- GitOps delivery using Argo CD or Flux CD.
-- Automated SAST, dependency, secret, IaC, and container scanning.
-- SBOM generation and artifact-signing workflow.
-- Policy enforcement using OPA, Gatekeeper, or Kyverno.
-- Metrics, logs, traces, dashboards, and alerts.
-- Backup, restoration, rollback, and incident-response exercises.
-- Final architecture, security, operations, and product documentation.
+* Product vision, personas, PRD, roadmap, and success metrics.
+* C4 diagrams, threat models, data models, and ADRs.
+* Accessible full-stack or mobile application.
+* PostgreSQL database and documented API contracts.
+* Data pipeline, analytics dashboard, or predictive model.
+* Locally hosted AI or RAG capability.
+* OpenTofu infrastructure and Ansible configuration.
+* Rootless container build using Podman.
+* Self-hosted CI/CD using Forgejo Actions or Woodpecker CI.
+* Kubernetes deployment using Helm or Kustomize.
+* GitOps delivery using Argo CD or Flux CD.
+* Automated SAST, dependency, secret, IaC, and container scanning.
+* SBOM generation and artifact-signing workflow.
+* Policy enforcement using OPA, Gatekeeper, or Kyverno.
+* Metrics, logs, traces, dashboards, and alerts.
+* Backup, restoration, rollback, and incident-response exercises.
+* Final architecture, security, operations, and product documentation.
 
 ---
 
 ## 📊 Bootcamp Track Matrix
 
 | Track | Primary FOSS Tools and Artifacts | Core Focus | Example Roles | Status |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | **Architecture** | C4, ADRs, Mermaid, PlantUML, OpenAPI | System Design and Technical Strategy | Software Architect, Solution Architect | 🟢 Complete |
 | **Product Management** | PRDs, Penpot, OpenProject, Matomo | Product Discovery and Delivery | Product Manager, Product Owner | 🟢 Complete |
 | **Full Stack** | TypeScript, Next.js, Node.js, PostgreSQL | Web Application Engineering | Full Stack, Frontend, Backend Developer | 🟢 Complete |
@@ -678,6 +756,8 @@ A typical capstone may include:
 | **Data Science** | Python, JupyterLab, SQL, Scikit-learn | Analytics, ETL, and Predictive ML | Data Analyst, Junior Data Scientist | 🟢 Complete |
 | **Cybersecurity** | Wazuh, Zeek, Nmap, Wireshark, ZAP | Defensive Security and Hardening | Security Analyst, SOC Analyst | 🟡 In Progress |
 | **DevSecOps** | Forgejo, OpenTofu, Kubernetes, Argo CD/Flux | Secure Delivery and Platform Automation | DevSecOps, Platform, SRE | 🟡 In Progress |
+| **Databases** | PostgreSQL, Prisma, Drizzle, SQLAlchemy | Data Modeling & ORM Performance | Database Architect, Backend Engineer | 🟢 Complete |
+| **SaaS Offerings** | Inngest, Sanity, Neon | Managed Cloud Services Integration | Solutions Architect, SaaS Engineer | 🟢 Complete |
 | **AI / GenAI** | PyTorch, llama.cpp, Qdrant, Haystack | Local AI, Agents, and RAG | AI Engineer, Applied AI Developer | 🟢 Complete |
 
 ---
@@ -686,23 +766,23 @@ A typical capstone may include:
 
 All cybersecurity, infrastructure, and DevSecOps exercises are intended for:
 
-- Personally owned systems
-- Local development environments
-- Purpose-built training laboratories
-- Open-source demonstration applications
-- Systems for which explicit authorization has been granted
+* Personally owned systems
+* Local development environments
+* Purpose-built training laboratories
+* Open-source demonstration applications
+* Systems for which explicit authorization has been granted
 
 Do not scan, intercept, exploit, disrupt, or access systems without written permission.
 
 Data and AI projects must also consider:
 
-- Dataset and model licensing
-- Privacy and informed consent
-- Sensitive and personal information
-- Bias and representational harm
-- Security of retrieved or generated content
-- Transparency and reproducibility
-- Appropriate human review
+* Dataset and model licensing
+* Privacy and informed consent
+* Sensitive and personal information
+* Bias and representational harm
+* Security of retrieved or generated content
+* Transparency and reproducibility
+* Appropriate human review
 
 ---
 
@@ -712,7 +792,7 @@ Clone the monorepo and navigate to an individual learning module:
 
 ```bash
 # Clone the repository
-git clone https://codeberg.org/your-username/bootcamp-monorepo.git
+git clone [https://codeberg.org/your-username/bootcamp-monorepo.git](https://codeberg.org/your-username/bootcamp-monorepo.git)
 
 # Enter the repository
 cd bootcamp-monorepo
@@ -721,20 +801,25 @@ cd bootcamp-monorepo
 cd 01-architecture/saas-system-design
 
 # Or explore the DevSecOps track
-cd 07-devsecops
+cd 05-cybersecurity-and-devsecops
+
+# Or explore Databases and SaaS modules
+cd 07-databases
+cd 08-SaaS-Offerings
+
 ```
 
 Individual modules may include their own:
 
-- `README.md`
-- dependency manifests
-- container definitions
-- environment examples
-- test instructions
-- architecture diagrams
-- security considerations
-- license information
-- setup and teardown procedures
+* `README.md`
+* dependency manifests
+* container definitions
+* environment examples
+* test instructions
+* architecture diagrams
+* security considerations
+* license information
+* setup and teardown procedures
 
 No proprietary hosted service should be required to complete the core exercises.
 
@@ -742,11 +827,15 @@ No proprietary hosted service should be required to complete the core exercises.
 
 ## ✍️ Author & Contact
 
-- **Developer:** Sean Wong
-- **LinkedIn:** [linkedin.com/in/yourprofile](https://www.linkedin.com/in/yourprofile)
-- **Portfolio:** [yourportfolio.com](https://yourportfolio.com)
-- **Email:** your.email@example.com
+* **Developer:** Sean Wong
+* **LinkedIn:** [linkedin.com/in/yourprofile](https://www.linkedin.com/in/yourprofile)
+* **Portfolio:** [yourportfolio.com](https://yourportfolio.com)
+* **Email:** your.email@example.com
 
 ---
 
-_Developed with continuous learning, open-source technology, secure engineering, and responsible innovation in mind._
+*Developed with continuous learning, open-source technology, secure engineering, and responsible innovation in mind.*
+
+```
+
+```
