@@ -106,7 +106,32 @@ The bootcamps are designed to build foundational and portfolio-ready skills rele
 Role readiness depends on prior experience, project depth, and the requirements of each organization. The repository is intended to demonstrate practical capabilities and transferable engineering knowledge rather than guarantee qualification for a specific position.
 
 ---
+## 📌 Repository Structure
 
+```text
+.
+├── 00-languages-and-tools
+├── 01-architecture-and-design
+├── 02-product-management
+├── 03-full-stack-web-dev
+├── 04-data-engineering-and-ai
+├── 05-cybersecurity-and-devsecops
+├── 06-cloud-and-infrastructure
+└── README.md
+
+```
+
+### 📁 Directory Overview
+
+* **`00-languages-and-tools`** — Deep-dives into core programming languages (Python, JavaScript, TypeScript), runtime mechanics, CPython/V8 internals, Git workflows, and CLI tooling.
+* **`01-architecture-and-design`** — Architectural blueprints, system design patterns, C4 diagrams, ADRs, Domain-Driven Design, and event-driven specs.
+* **`02-product-management`** — Product specs, discovery frameworks, user story mapping, roadmaps, release planning, and outcome-driven metrics.
+* **`03-full-stack-web-dev`** — End-to-end web engineering modules covering frontend UI frameworks, backend HTTP APIs, databases, server-side rendering, and production web deployment.
+* **`04-data-engineering-and-ai`** — Data pipelines, ETL/ELT workflows, relational and non-relational data modeling, ML engineering, vector search, and AI orchestration.
+* **`05-cybersecurity-and-devsecops`** — Threat modeling, security auditing, vulnerability analysis, hard secret management, identity integration, and continuous security testing.
+* **`06-cloud-and-infrastructure`** — Infrastructure as Code (IaC), container orchestration, GitOps automation, networking, observability, and self-hosted cloud platform configurations.
+
+---
 # 🛠️ Track Breakdowns & Highlights
 
 ## 1. 🏛️ Architecture
