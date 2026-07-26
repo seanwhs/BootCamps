@@ -1,0 +1,1414 @@
+# Workbook 4 — API Contract and Paradigm Design  
+## REST, GraphQL, RPC, Resources, Data Formats, Errors, Pagination, Authentication, and Service Boundaries
+
+---
+
+# Workbook Overview
+
+This workbook accompanies:
+
+> **Part 4 — RESTful Services and API Paradigms**
+
+This is a **no-code API design workbook**.
+
+You will plan and document APIs without implementing them in a programming language or framework.
+
+You will practice:
+
+- Identifying API consumers and providers
+- Modeling resources
+- Designing REST endpoints
+- Mapping CRUD operations to HTTP methods
+- Using path and query parameters
+- Designing request and response bodies
+- Designing error formats
+- Designing pagination
+- Designing filtering, sorting, and searching
+- Defining authentication and authorization
+- Applying idempotency
+- Planning API versioning
+- Comparing REST, GraphQL, and RPC
+- Selecting JSON, XML, multipart, or binary formats
+- Designing synchronous and asynchronous APIs
+- Narrating service-to-service communication
+
+The goal is to produce an API contract that another person could use to understand the system before implementation begins.
+
+---
+
+# Learning Objectives
+
+By completing this workbook, you should be able to:
+
+- Explain what an API is.
+- Identify API consumers and providers.
+- Model application concepts as resources.
+- Design resource-oriented REST URLs.
+- Choose appropriate HTTP methods.
+- Distinguish path parameters from query parameters.
+- Design request and response schemas.
+- Design consistent API errors.
+- Design pagination, filtering, sorting, and search.
+- Explain authentication and authorization requirements.
+- Identify idempotent and non-idempotent operations.
+- Design safe retry behavior.
+- Plan API versioning and compatibility.
+- Compare REST, GraphQL, and RPC.
+- Choose appropriate serialization formats.
+- Design asynchronous API workflows.
+- Document API assumptions and tradeoffs.
+
+---
+
+# How to Use This Workbook
+
+Work through the activities in order.
+
+```mermaid
+flowchart TD
+    A[Choose Application Domain] --> B[Identify Consumers and Providers]
+    B --> C[Identify Resources]
+    C --> D[Design REST Endpoints]
+    D --> E[Design Schemas]
+    E --> F[Design Errors and Pagination]
+    F --> G[Design Authentication]
+    G --> H[Plan Idempotency and Async Work]
+    H --> I[Compare API Paradigms]
+    I --> J[Document Contract]
+    J --> K[Review Tradeoffs]
+```
+
+For each design choice:
+
+```text
+State what you chose.
+Explain why.
+Identify alternatives.
+Record tradeoffs.
+```
+
+---
+
+# Activity 1 — Choose an API Domain
+
+Use the application from Workbook 1 or choose one of these:
+
+```text
+Online store
+Task manager
+Learning platform
+Appointment system
+Social network
+Event registration system
+Banking dashboard
+Project-management tool
+Recipe platform
+```
+
+## Domain
+
+```text
+____________________________________________________________
+```
+
+## What does the API provide?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+## Who consumes the API?
+
+```text
+1. ________________________________________________________
+2. ________________________________________________________
+3. ________________________________________________________
+4. ________________________________________________________
+```
+
+## Who provides the API?
+
+```text
+____________________________________________________________
+```
+
+---
+
+# Activity 2 — API Consumers and Providers
+
+Complete the table.
+
+| Consumer | What does it need? | Provider | What does the provider expose? |
+|---|---|---|---|
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+
+## Example
+
+| Consumer | What does it need? | Provider | What does the provider expose? |
+|---|---|---|---|
+| Web frontend | Product data | Store backend | Product API |
+| Mobile app | Order history | Store backend | Order API |
+| Store backend | Payment authorization | Payment provider | Payment API |
+| Notification worker | Email delivery | Email provider | Email API |
+
+## Reflection
+
+Why should an API consumer not need to know the provider’s internal implementation?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 3 — Identify Resources
+
+List the important resources in your application.
+
+```text
+1. ________________________________________________________
+2. ________________________________________________________
+3. ________________________________________________________
+4. ________________________________________________________
+5. ________________________________________________________
+6. ________________________________________________________
+7. ________________________________________________________
+8. ________________________________________________________
+```
+
+## Resource table
+
+| Resource | Description | Collection URL | Individual URL |
+|---|---|---|---|
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+
+## Example
+
+| Resource | Description | Collection URL | Individual URL |
+|---|---|---|---|
+| Product | A product for sale | `/products` | `/products/123` |
+| Order | A customer order | `/orders` | `/orders/9001` |
+| User | An account | `/users` | `/users/42` |
+
+---
+
+# Activity 4 — Resources vs Actions
+
+Classify each as:
+
+```text
+Resource-oriented
+Action-oriented
+Possibly both
+```
+
+| Endpoint | Classification | Explanation |
+|---|---|---|
+| `GET /products` |  |  |
+| `POST /products` |  |  |
+| `POST /create-product` |  |  |
+| `GET /orders/9001` |  |  |
+| `POST /orders/9001/cancel` |  |  |
+| `POST /orders/9001/cancellations` |  |  |
+| `POST /calculate-shipping` |  |  |
+| `GET /reports/monthly` |  |  |
+
+## Reflection
+
+When might an action-oriented endpoint be clearer than forcing an operation into CRUD?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 5 — CRUD Mapping
+
+Complete the table for one resource.
+
+## Resource
+
+```text
+____________________________________________________________
+```
+
+| Operation | HTTP method | Endpoint | Expected result |
+|---|---|---|---|
+| Create collection item |  |  |  |
+| Read collection |  |  |  |
+| Read individual item |  |  |  |
+| Replace individual item |  |  |  |
+| Partially update item |  |  |  |
+| Delete individual item |  |  |  |
+
+## Example
+
+| Operation | HTTP method | Endpoint | Expected result |
+|---|---|---|---|
+| Create product | `POST` | `/products` | `201 Created` |
+| List products | `GET` | `/products` | `200 OK` |
+| Get product | `GET` | `/products/123` | `200 OK` |
+| Replace product | `PUT` | `/products/123` | `200 OK` |
+| Update price | `PATCH` | `/products/123` | `200 OK` |
+| Delete product | `DELETE` | `/products/123` | `204 No Content` |
+
+---
+
+# Activity 6 — Path and Query Parameters
+
+Choose one collection endpoint.
+
+```text
+Collection endpoint:
+____________________________________________________________
+```
+
+## Path parameters
+
+List identifiers that belong in the path.
+
+```text
+____________________________________________________________
+```
+
+Example:
+
+```text
+/orders/9001
+```
+
+## Query parameters
+
+List filters, sorting, search, or pagination values.
+
+```text
+____________________________________________________________
+```
+
+Example:
+
+```text
+/products?category=keyboards&sort=price&page=2
+```
+
+## Parameter table
+
+| Parameter | Path or query? | Type | Required? | Purpose |
+|---|---|---|---:|---|
+|  |  |  |  |  |
+|  |  |  |  |  |
+|  |  |  |  |  |
+|  |  |  |  |  |
+
+## Reflection
+
+Why should sensitive data generally not be placed in query parameters?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 7 — Request Schema
+
+Choose a state-changing operation.
+
+Examples:
+
+```text
+Create order
+Update profile
+Create task
+Upload document
+Send message
+Create appointment
+```
+
+## Operation
+
+```text
+____________________________________________________________
+```
+
+## Request
+
+```http
+METHOD /path
+```
+
+```text
+____________________________________________________________
+```
+
+## Request headers
+
+```http
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer REDACTED
+```
+
+Add or remove headers as appropriate.
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+## Request body
+
+```json
+{
+}
+```
+
+## Field table
+
+| Field | Type | Required? | Validation rules | Sensitive? |
+|---|---|---:|---|---:|
+|  |  |  |  |  |
+|  |  |  |  |  |
+|  |  |  |  |  |
+|  |  |  |  |  |
+
+---
+
+# Activity 8 — Response Schema
+
+Use the operation from Activity 7.
+
+## Success status
+
+```text
+____________________________________________________________
+```
+
+## Response body
+
+```json
+{
+}
+```
+
+## Response field table
+
+| Field | Type | Meaning | Public or private? |
+|---|---|---|---|
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+
+## Does the response include a `Location` header?
+
+```text
+Yes / No
+
+Explain:
+____________________________________________________________
+```
+
+---
+
+# Activity 9 — Error Design
+
+Design a consistent error object.
+
+```json
+{
+  "error": {
+    "code": "",
+    "message": "",
+    "fields": {},
+    "requestId": ""
+  }
+}
+```
+
+Define each field:
+
+| Field | Meaning |
+|---|---|
+| `code` |  |
+| `message` |  |
+| `fields` |  |
+| `requestId` |  |
+
+## Error example
+
+Choose a validation failure and complete:
+
+```http
+422 Unprocessable Content
+Content-Type: application/json
+```
+
+```json
+{
+  "error": {
+    "code": "",
+    "message": "",
+    "fields": {},
+    "requestId": ""
+  }
+}
+```
+
+## Security reflection
+
+What should not appear in ordinary client-facing error responses?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 10 — Status-Code Planning
+
+Choose status codes for your operations.
+
+| Situation | Status code | Why? |
+|---|---:|---|
+| Successful read |  |  |
+| Successful creation |  |  |
+| Accepted background work |  |  |
+| Successful operation with no body |  |  |
+| Malformed request |  |  |
+| Missing authentication |  |  |
+| Permission denied |  |  |
+| Resource not found |  |  |
+| State conflict |  |  |
+| Validation failure |  |  |
+| Rate limited |  |  |
+| Unexpected backend failure |  |  |
+
+---
+
+# Activity 11 — Pagination Design
+
+Choose a collection endpoint.
+
+```text
+Collection:
+____________________________________________________________
+```
+
+## Page-based design
+
+```http
+GET /resources?page=2&limit=20
+```
+
+What does each parameter mean?
+
+```text
+page:
+____________________________________________________________
+
+limit:
+____________________________________________________________
+```
+
+## Response shape
+
+```json
+{
+  "items": [],
+  "page": 2,
+  "limit": 20,
+  "total": 0,
+  "totalPages": 0
+}
+```
+
+Which fields should your API include?
+
+```text
+____________________________________________________________
+```
+
+## Cursor-based design
+
+```http
+GET /resources?limit=20&after=cursor_abc123
+```
+
+What is the cursor?
+
+```text
+____________________________________________________________
+```
+
+## Choose a strategy
+
+```text
+Page-based / Offset-based / Cursor-based
+
+Why:
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 12 — Filtering, Sorting, and Searching
+
+Choose a collection resource.
+
+## Filtering
+
+```http
+GET /resources?status=pending
+```
+
+Your filters:
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+## Sorting
+
+```http
+GET /resources?sort=createdAt&order=desc
+```
+
+Your sorting options:
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+## Search
+
+```http
+GET /resources?q=example
+```
+
+Your search behavior:
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+## Safety
+
+Which filter and sort fields are allowed?
+
+```text
+____________________________________________________________
+```
+
+Why should the server whitelist sort fields?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 13 — Relationships and Nested Resources
+
+Identify relationships in your application.
+
+| Parent resource | Child or related resource | Relationship |
+|---|---|---|
+|  |  |  |
+|  |  |  |
+|  |  |  |
+
+## Choose nested endpoints
+
+Examples:
+
+```text
+/users/42/orders
+/orders/9001/items
+/categories/5/products
+```
+
+Your endpoints:
+
+```text
+1. ________________________________________________________
+2. ________________________________________________________
+3. ________________________________________________________
+```
+
+## Reflection
+
+When might a top-level endpoint be clearer than deeply nested routes?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 14 — Authentication and Authorization
+
+Choose one protected endpoint.
+
+```text
+Endpoint:
+____________________________________________________________
+```
+
+## Authentication
+
+```text
+[ ] Session cookie
+[ ] Bearer token
+[ ] API key
+[ ] OAuth or OpenID Connect
+[ ] Other: _________________________________________________
+```
+
+Explain:
+
+```text
+____________________________________________________________
+```
+
+## Authorization
+
+What permissions are required?
+
+```text
+____________________________________________________________
+```
+
+## Ownership
+
+Does the resource belong to a particular user or organization?
+
+```text
+Yes / No
+
+Explain:
+____________________________________________________________
+```
+
+## Failure responses
+
+```text
+Missing or invalid credentials:
+____________________________________________________________
+
+Authenticated but unauthorized:
+____________________________________________________________
+
+Resource does not exist:
+____________________________________________________________
+```
+
+---
+
+# Activity 15 — Idempotency and Retry Safety
+
+List operations in your application that may be retried.
+
+```text
+1. ________________________________________________________
+2. ________________________________________________________
+3. ________________________________________________________
+4. ________________________________________________________
+```
+
+## Idempotency table
+
+| Operation | Naturally idempotent? | Needs idempotency key? | Why? |
+|---|---:|---:|---|
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+|  |  |  |  |
+
+## Idempotency-key design
+
+Header:
+
+```http
+Idempotency-Key: ___________________________________________
+```
+
+What does the server store?
+
+```text
+____________________________________________________________
+```
+
+What happens when the same key is reused?
+
+```text
+____________________________________________________________
+```
+
+---
+
+# Activity 16 — REST, GraphQL, or RPC?
+
+For each operation, choose the most natural style.
+
+Use:
+
+```text
+REST
+GraphQL
+RPC
+Could use more than one
+```
+
+| Operation | Preferred style | Why? |
+|---|---|---|
+| List products |  |  |
+| Retrieve a complex dashboard |  |  |
+| Calculate shipping |  |  |
+| Create an order |  |  |
+| Internal video-transcoding request |  |  |
+| Public product API |  |  |
+| Real-time order updates |  |  |
+
+## Reflection
+
+Which paradigm would you choose for your overall application?
+
+```text
+____________________________________________________________
+```
+
+Why?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 17 — GraphQL Design
+
+If GraphQL is appropriate for your application, define a conceptual schema.
+
+## Types
+
+```graphql
+type Product {
+  id: ID!
+  name: String!
+  price: Float!
+}
+```
+
+Add two or more types:
+
+```graphql
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+```
+
+## Queries
+
+What data should clients be able to request?
+
+```graphql
+____________________________________________________________
+____________________________________________________________
+```
+
+## Mutations
+
+What data-changing operations should clients be able to perform?
+
+```graphql
+____________________________________________________________
+____________________________________________________________
+```
+
+## Query-complexity controls
+
+How will you prevent excessively expensive queries?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 18 — RPC Design
+
+If RPC is appropriate, define three remote procedures.
+
+```text
+1. ________________________________________________________
+2. ________________________________________________________
+3. ________________________________________________________
+```
+
+For one procedure:
+
+## Procedure name
+
+```text
+____________________________________________________________
+```
+
+## Parameters
+
+```text
+____________________________________________________________
+```
+
+## Result
+
+```text
+____________________________________________________________
+```
+
+## Possible errors
+
+```text
+____________________________________________________________
+```
+
+## Why is RPC appropriate here?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 19 — Serialization Format
+
+Choose formats for different operations.
+
+| Data or operation | Format | Why? |
+|---|---|---|
+| Public web API |  |  |
+| Internal strongly typed service |  |  |
+| File upload with fields |  |  |
+| Enterprise document integration |  |  |
+| Large binary file |  |  |
+
+Choose from:
+
+```text
+JSON
+XML
+Multipart form data
+Protocol Buffers
+Raw binary
+```
+
+## Reflection
+
+What limitations does JSON have?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 20 — Synchronous vs Asynchronous Design
+
+Classify each operation:
+
+```text
+Synchronous
+Asynchronous
+Could use either
+```
+
+| Operation | Classification | Why? |
+|---|---|---|
+| Retrieve product details |  |  |
+| Create a small profile update |  |  |
+| Generate a large report |  |  |
+| Send order email |  |  |
+| Process uploaded video |  |  |
+| Calculate a simple shipping estimate |  |  |
+| Run a long data import |  |  |
+
+## Asynchronous workflow
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant API as API
+    participant Q as Queue
+    participant W as Worker
+
+    C->>API: POST /jobs
+    API->>Q: Enqueue job
+    API-->>C: 202 Accepted
+    Q->>W: Deliver job
+    W->>W: Process job
+    C->>API: GET /jobs/:id
+    API-->>C: Job status
+```
+
+Explain your asynchronous workflow:
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 21 — API Gateway and Service Boundaries
+
+Draw a gateway architecture:
+
+```mermaid
+flowchart TD
+    WEB[Web Client] --> G[API Gateway]
+    MOBILE[Mobile Client] --> G
+    PARTNER[Partner Client] --> G
+
+    G --> USER[User Service]
+    G --> PRODUCT[Product Service]
+    G --> ORDER[Order Service]
+    G --> NOTIFY[Notification Service]
+```
+
+## What should the gateway handle?
+
+```text
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+```
+
+## What should remain inside services?
+
+```text
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+```
+
+## What risks does the gateway introduce?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 22 — API Versioning
+
+Choose an API versioning strategy.
+
+```text
+[ ] URL versioning
+[ ] Header versioning
+[ ] Query-parameter versioning
+[ ] Schema evolution without explicit versions
+[ ] Other: _________________________________________________
+```
+
+## Strategy
+
+```text
+____________________________________________________________
+```
+
+## Why?
+
+```text
+____________________________________________________________
+____________________________________________________________
+```
+
+## Breaking change example
+
+Original response:
+
+```json
+{
+  "price": 79.99
+}
+```
+
+Proposed response:
+
+```json
+{
+  "price": {
+    "amount": 7999,
+    "currency": "USD"
+  }
+}
+```
+
+How would you migrate clients safely?
+
+```text
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 23 — API Documentation
+
+Write documentation for one endpoint.
+
+```markdown
+## Endpoint
+
+```http
+METHOD /path
+```
+
+### Purpose
+
+...
+
+### Authentication
+
+...
+
+### Authorization
+
+...
+
+### Parameters
+
+| Name | Location | Type | Required | Description |
+|---|---|---|---:|---|
+|  |  |  |  |  |
+
+### Request body
+
+```json
+{}
+```
+
+### Success response
+
+```http
+200 OK
+```
+
+```json
+{}
+```
+
+### Error responses
+
+| Status | Condition |
+|---:|---|
+|  |  |
+
+### Pagination or filtering
+
+...
+
+### Caching
+
+...
+
+### Idempotency
+
+...
+```
+
+Complete the template for your endpoint.
+
+---
+
+# Activity 24 — API Review
+
+Review your API contract.
+
+## Resource design
+
+```text
+[ ] Resources are clearly identified.
+[ ] Collections and individual resources are distinct.
+[ ] URLs are understandable.
+[ ] Methods match operations.
+[ ] Action endpoints are justified.
+```
+
+## Request design
+
+```text
+[ ] Parameters are in appropriate locations.
+[ ] Request bodies have defined formats.
+[ ] Required fields are documented.
+[ ] Validation rules are documented.
+[ ] Authentication is documented.
+```
+
+## Response design
+
+```text
+[ ] Success status codes are defined.
+[ ] Response schemas are defined.
+[ ] Error formats are consistent.
+[ ] Sensitive fields are excluded.
+[ ] Pagination is defined where needed.
+```
+
+## Reliability
+
+```text
+[ ] Retry behavior is documented.
+[ ] Idempotency is considered.
+[ ] Asynchronous operations have status handling.
+[ ] Rate limits are considered.
+```
+
+## Compatibility
+
+```text
+[ ] Versioning strategy exists.
+[ ] Breaking changes are identified.
+[ ] Deprecation is considered.
+[ ] Clients can handle future changes.
+```
+
+---
+
+# Activity 25 — API Narration
+
+Write a narration for one important API operation.
+
+Use this structure:
+
+```text
+1. The client begins by ______________________________________
+2. It sends ________________________________________________
+3. The API receives and validates ___________________________
+4. The API authenticates ___________________________________
+5. The API authorizes ______________________________________
+6. The backend performs ____________________________________
+7. The backend communicates with ___________________________
+8. The server returns ______________________________________
+9. The client interprets ____________________________________
+10. If something fails, _____________________________________
+```
+
+Write your narration:
+
+```text
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+____________________________________________________________
+```
+
+---
+
+# Activity 26 — Reflection Questions
+
+## Question A
+
+Which resource was easiest to model?
+
+```text
+____________________________________________________________
+```
+
+## Question B
+
+Which operation was difficult to represent with CRUD?
+
+```text
+____________________________________________________________
+```
+
+## Question C
+
+Which operation needs idempotency protection?
+
+```text
+____________________________________________________________
+```
+
+## Question D
+
+Which data should never be returned by the public API?
+
+```text
+____________________________________________________________
+```
+
+## Question E
+
+Which API paradigm best fits your application?
+
+```text
+____________________________________________________________
+```
+
+## Question F
+
+What is one reason not to use GraphQL?
+
+```text
+____________________________________________________________
+```
+
+## Question G
+
+What is one reason not to use microservice RPC?
+
+```text
+____________________________________________________________
+```
+
+## Question H
+
+Which operation should be asynchronous?
+
+```text
+____________________________________________________________
+```
+
+## Question I
+
+What is the most important API compatibility risk?
+
+```text
+____________________________________________________________
+```
+
+## Question J
+
+What would you simplify if only one frontend and one backend consumed the API?
+
+```text
+____________________________________________________________
+```
+
+---
+
+# Workbook Completion Checklist
+
+```text
+[ ] I identified API consumers and providers.
+[ ] I identified API resources.
+[ ] I distinguished resources from actions.
+[ ] I mapped CRUD operations to methods.
+[ ] I designed path and query parameters.
+[ ] I designed a request schema.
+[ ] I designed a response schema.
+[ ] I designed error responses.
+[ ] I selected status codes.
+[ ] I designed pagination.
+[ ] I designed filtering and sorting.
+[ ] I identified relationships.
+[ ] I planned authentication and authorization.
+[ ] I considered idempotency.
+[ ] I compared REST, GraphQL, and RPC.
+[ ] I considered serialization formats.
+[ ] I designed asynchronous work.
+[ ] I considered an API gateway.
+[ ] I selected a versioning strategy.
+[ ] I documented an endpoint.
+[ ] I reviewed the API contract.
+[ ] I narrated an API operation.
+[ ] I completed the reflection questions.
+```
+
+---
+
+# Final Submission
+
+Submit:
+
+```text
+1. API domain description
+2. Consumer-provider table
+3. Resource inventory
+4. Resource/action classification
+5. CRUD mapping
+6. Parameter design
+7. Request schema
+8. Response schema
+9. Error format
+10. Status-code table
+11. Pagination design
+12. Filtering and sorting design
+13. Resource relationship design
+14. Authentication and authorization plan
+15. Idempotency plan
+16. REST/GraphQL/RPC comparison
+17. GraphQL schema or RPC design if applicable
+18. Serialization-format decisions
+19. Async workflow
+20. API gateway design if applicable
+21. Versioning strategy
+22. Endpoint documentation
+23. API review checklist
+24. API narration
+25. Reflection answers
+```
+
+---
+
+# Completion Standard
+
+You have completed this workbook when you can explain:
+
+```text
+What the API provides
+Who consumes it
+What resources exist
+How resources are identified
+Which HTTP methods are used
+Where parameters belong
+What requests look like
+What responses look like
+How errors are represented
+How collections are paginated
+How authentication works
+How authorization works
+How retries are made safe
+Which operations are asynchronous
+Why REST, GraphQL, or RPC was selected
+How data is serialized
+How the API evolves
+```
+
+The central goal of this workbook is:
+
+> Design an API contract clearly enough that another person could consume it without knowing how the backend is implemented.
