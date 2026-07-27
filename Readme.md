@@ -1,16 +1,3 @@
-# 🚀 Multidisciplinary Engineering, Architecture, Product & DevSecOps Bootcamps
-
-A centralized monorepo containing software projects, product specifications, architectural blueprints, data notebooks, security labs, infrastructure code, CI/CD workflows, capstones, and technical learning notes from multidisciplinary technology bootcamps.
-
-All tracks prioritize **free and open-source software (FOSS)**, open standards, reproducible environments, portable architectures, and self-hostable tooling.
-
-[![Focus](https://img.shields.io/badge/Focus-Architecture_%7C_Product_%7C_Engineering_%7C_Data_%7C_Security_%7C_AI-blue?style=for-the-badge)](#)
-[![DevSecOps](https://img.shields.io/badge/DevSecOps-CI%2FCD_%7C_GitOps_%7C_IaC-purple?style=for-the-badge)](#)
-[![Tooling](https://img.shields.io/badge/Tooling-FOSS-orange?style=for-the-badge)](#)
-[![Status](https://img.shields.io/badge/Status-Active_Learning-success?style=for-the-badge)](#)
-
----
-
 ## 📌 Repository Overview
 
 This monorepo is a unified workspace for documenting my technical growth, code evolution, product thinking, architectural decisions, security practices, and engineering deliverables across several intensive bootcamp tracks.
@@ -106,6 +93,7 @@ The bootcamps are designed to build foundational and portfolio-ready skills rele
 Role readiness depends on prior experience, project depth, and the requirements of each organization. The repository is intended to demonstrate practical capabilities and transferable engineering knowledge rather than guarantee qualification for a specific position.
 
 ---
+
 ## 📌 Repository Structure
 
 ```text
@@ -114,13 +102,14 @@ Role readiness depends on prior experience, project depth, and the requirements 
 ├── 01-architecture-and-design
 ├── 02-product-management
 ├── 03-full-stack-web-dev
-├── 04-data-engineering-and-ai
-├── 05-cybersecurity-and-devsecops
-├── 06-cloud-and-infrastructure
-├── 07-databases
-├── 08-SaaS-Offerings
+├── 04-mobile-development
+├── 05-data-science-and-analytics
+├── 06-cybersecurity-and-defensive-systems
+├── 07-devsecops-and-platform-engineering
+├── 08-databases-and-orm-patterns
+├── 09-saas-offerings-and-cloud
+├── 10-ai-and-generative-ai
 └── README.md
-
 
 ```
 
@@ -130,11 +119,13 @@ Role readiness depends on prior experience, project depth, and the requirements 
 * **`01-architecture-and-design`** — Architectural blueprints, system design patterns, C4 diagrams, ADRs, Domain-Driven Design, and event-driven specs.
 * **`02-product-management`** — Product specs, discovery frameworks, user story mapping, roadmaps, release planning, and outcome-driven metrics.
 * **`03-full-stack-web-dev`** — End-to-end web engineering modules covering frontend UI frameworks, backend HTTP APIs, databases, server-side rendering, and production web deployment.
-* **`04-data-engineering-and-ai`** — Data pipelines, ETL/ELT workflows, relational and non-relational data modeling, ML engineering, vector search, and AI orchestration.
-* **`05-cybersecurity-and-devsecops`** — Threat modeling, security auditing, vulnerability analysis, hard secret management, identity integration, and continuous security testing.
-* **`06-cloud-and-infrastructure`** — Infrastructure as Code (IaC), container orchestration, GitOps automation, networking, observability, and self-hosted cloud platform configurations.
-* **`07-databases`** — Relational, non-relational, and specialized database systems, indexing, query optimization, schema migrations, data modeling, and Object-Relational Mapping (ORM) design patterns.
-* **`08-SaaS-Offerings`** — Integration patterns, architectural evaluation, and workflows utilizing modern cloud services and platform solutions such as Inngest (event-driven workflow orchestration), Sanity (headless CMS & structured content platform), and Neon (serverless Postgres).
+* **`04-mobile-development`** — Cross-platform mobile solutions using React Native and Flutter, offline-first architectures, SQLite local caching, and background sync.
+* **`05-data-science-and-analytics`** — Exploratory data analysis, ETL/ELT pipelines, analytical SQL, statistical modeling, machine learning workflows, and reporting dashboards.
+* **`06-cybersecurity-and-defensive-systems`** — Threat modeling, host hardening, packet analysis, OWASP vulnerability assessments, SIEM rules, and incident triage.
+* **`07-devsecops-and-platform-engineering`** — CI/CD automation, Infrastructure as Code (OpenTofu), container orchestration (Kubernetes/K3s), GitOps, secrets management, and observability.
+* **`08-databases-and-orm-patterns`** — Relational schema design, normalization, query optimization (`EXPLAIN ANALYZE`), indexing strategies, and ORM abstractions (Active Record vs. Data Mapper).
+* **`09-saas-offerings-and-cloud`** — Architectural evaluations and integration patterns for cloud-native managed services (Inngest, Sanity, Neon Postgres).
+* **`10-ai-and-generative-ai`** — Local inference, embeddings, vector databases (Qdrant/Chroma), Retrieval-Augmented Generation (RAG), agent workflows, and LLM evaluation frameworks.
 
 ---
 
@@ -749,93 +740,19 @@ A typical capstone may include:
 
 | Track | Primary FOSS Tools and Artifacts | Core Focus | Example Roles | Status |
 | --- | --- | --- | --- | --- |
-| **Architecture** | C4, ADRs, Mermaid, PlantUML, OpenAPI | System Design and Technical Strategy | Software Architect, Solution Architect | 🟢 Complete |
-| **Product Management** | PRDs, Penpot, OpenProject, Matomo | Product Discovery and Delivery | Product Manager, Product Owner | 🟢 Complete |
-| **Full Stack** | TypeScript, Next.js, Node.js, PostgreSQL | Web Application Engineering | Full Stack, Frontend, Backend Developer | 🟢 Complete |
-| **Mobile Development** | React Native, Flutter, SQLite | Cross-Platform Applications | Mobile Developer, Mobile Engineer | 🟡 In Progress |
-| **Data Science** | Python, JupyterLab, SQL, Scikit-learn | Analytics, ETL, and Predictive ML | Data Analyst, Junior Data Scientist | 🟢 Complete |
-| **Cybersecurity** | Wazuh, Zeek, Nmap, Wireshark, ZAP | Defensive Security and Hardening | Security Analyst, SOC Analyst | 🟡 In Progress |
-| **DevSecOps** | Forgejo, OpenTofu, Kubernetes, Argo CD/Flux | Secure Delivery and Platform Automation | DevSecOps, Platform, SRE | 🟡 In Progress |
-| **Databases** | PostgreSQL, Prisma, Drizzle, SQLAlchemy | Data Modeling & ORM Performance | Database Architect, Backend Engineer | 🟢 Complete |
-| **SaaS Offerings** | Inngest, Sanity, Neon | Managed Cloud Services Integration | Solutions Architect, SaaS Engineer | 🟢 Complete |
-| **AI / GenAI** | PyTorch, llama.cpp, Qdrant, Haystack | Local AI, Agents, and RAG | AI Engineer, Applied AI Developer | 🟢 Complete |
+| **01. Architecture** | C4, ADRs, Mermaid, PlantUML, OpenAPI | System Design & Technical Strategy | Software Architect, Solution Architect | 🟢 Complete |
+| **02. Product Management** | PRDs, Penpot, OpenProject, Matomo | Product Discovery & Delivery | Product Manager, Product Owner | 🟢 Complete |
+| **03. Full Stack Web** | TypeScript, Next.js, Node.js, PostgreSQL | Web Application Engineering | Full Stack, Frontend, Backend Developer | 🟢 Complete |
+| **04. Mobile Development** | React Native, Flutter, SQLite | Cross-Platform Applications | Mobile Developer, Mobile Engineer | 🟡 In Progress |
+| **05. Data Science & AI** | Python, JupyterLab, SQL, Scikit-learn | Analytics, ETL, & Predictive ML | Data Analyst, Junior Data Scientist | 🟢 Complete |
+| **06. Cybersecurity** | Wireshark, Nmap, OWASP ZAP, Wazuh | Threat Analysis & System Hardening | Cybersecurity Analyst, SOC Analyst | 🟢 Complete |
+| **07. DevSecOps** | OpenTofu, Ansible, K3s, Forgejo, Argo | CI/CD, GitOps, & IaC Automation | DevSecOps Engineer, Platform Engineer | 🟢 Complete |
+| **08. Databases & ORMs** | PostgreSQL, Prisma, Drizzle, DBeaver | Schema Design & Query Tuning | Backend Engineer, Database Admin | 🟢 Complete |
+| **09. SaaS Integration** | Inngest, Sanity, Neon Postgres | Cloud Services & Hybrid Architecture | Cloud Solutions Architect, Full Stack | 🟢 Complete |
+| **10. AI & Generative AI** | PyTorch, Ollama, Qdrant, LangChain | RAG, Embeddings, & Local LLM Ops | AI Application Engineer, RAG Developer | 🟡 In Progress |
 
 ---
 
-## 🔐 Responsible and Ethical Use
+## 📜 License & Usage
 
-All cybersecurity, infrastructure, and DevSecOps exercises are intended for:
-
-* Personally owned systems
-* Local development environments
-* Purpose-built training laboratories
-* Open-source demonstration applications
-* Systems for which explicit authorization has been granted
-
-Do not scan, intercept, exploit, disrupt, or access systems without written permission.
-
-Data and AI projects must also consider:
-
-* Dataset and model licensing
-* Privacy and informed consent
-* Sensitive and personal information
-* Bias and representational harm
-* Security of retrieved or generated content
-* Transparency and reproducibility
-* Appropriate human review
-
----
-
-## 🧰 Getting Started Locally
-
-Clone the monorepo and navigate to an individual learning module:
-
-```bash
-# Clone the repository
-git clone [https://codeberg.org/your-username/bootcamp-monorepo.git](https://codeberg.org/your-username/bootcamp-monorepo.git)
-
-# Enter the repository
-cd bootcamp-monorepo
-
-# Open an architecture module
-cd 01-architecture/saas-system-design
-
-# Or explore the DevSecOps track
-cd 05-cybersecurity-and-devsecops
-
-# Or explore Databases and SaaS modules
-cd 07-databases
-cd 08-SaaS-Offerings
-
-```
-
-Individual modules may include their own:
-
-* `README.md`
-* dependency manifests
-* container definitions
-* environment examples
-* test instructions
-* architecture diagrams
-* security considerations
-* license information
-* setup and teardown procedures
-
-No proprietary hosted service should be required to complete the core exercises.
-
----
-
-## ✍️ Author & Contact
-
-* **Developer:** Sean Wong
-* **LinkedIn:** [linkedin.com/in/yourprofile](https://www.linkedin.com/in/yourprofile)
-* **Portfolio:** [yourportfolio.com](https://yourportfolio.com)
-* **Email:** your.email@example.com
-
----
-
-*Developed with continuous learning, open-source technology, secure engineering, and responsible innovation in mind.*
-
-```
-
-```
+All original code, documentation, and architecture diagrams in this monorepo are licensed under the [MIT License](https://www.google.com/search?q=LICENSE) or [Apache-2.0 License](https://www.google.com/search?q=LICENSE-APACHE) where specified. Content and datasets are provided for educational, reproducible, and non-commercial portfolio demonstration purposes.
