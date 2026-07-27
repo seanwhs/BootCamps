@@ -1,6 +1,10 @@
-# Data Science & Analytics Engineering Curriculum
+# 🚀 Data Science & Analytics Engineering Curriculum
 
-```
+A comprehensive, production-ready curriculum designed to take you from raw data processing to robust MLOps and responsible AI engineering.
+
+## Core Curriculum Map
+
+```text
   [1. Data Wrangling & SQL Engine]
                  │
                  ▼
@@ -246,4 +250,4 @@
 
 > **Phase 6 Capstone:** Deliver an end-to-end executive decision pack containing a live Metabase/Superset dashboard, a SHAP-backed explainability report breaking down model predictions, and an executive summary presenting key strategic recommendations.
 
----
+```
