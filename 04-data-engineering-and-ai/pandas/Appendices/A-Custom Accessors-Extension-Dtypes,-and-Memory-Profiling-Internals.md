@@ -1,4 +1,4 @@
-# Appendix A: Custom Accessors, Extension Dtypes, and Memory Profiling Internals
+# Appendix A: Custom Accessors, Extension Dtypes, and Memory Profiling Internals  
 
 Welcome to **Appendix A**. In this appendix, we move beyond standard Pandas usage to explore three advanced architectural patterns:
 
