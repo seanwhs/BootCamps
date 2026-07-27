@@ -746,14 +746,14 @@ A typical capstone may include:
 | Track | Primary FOSS Tools and Artifacts | Core Focus | Example Roles | Status |
 | --- | --- | --- | --- | --- |
 | **01. Architecture** | C4, ADRs, Mermaid, PlantUML, OpenAPI | System Design & Technical Strategy | Software Architect, Solution Architect | 🟢 Complete |
-| **02. Product Management** | PRDs, Penpot, OpenProject, Matomo | Product Discovery & Delivery | Product Manager, Product Owner | 🟢 Complete |
-| **03. Full Stack Web** | TypeScript, Next.js, Node.js, PostgreSQL | Web Application Engineering | Full Stack, Frontend, Backend Developer | 🟢 Complete |
+| **02. Product Management** | PRDs, Penpot, OpenProject, Matomo | Product Discovery & Delivery | Product Manager, Product Owner | 🟡 In Progress |
+| **03. Full Stack Web** | TypeScript, Next.js, Node.js, PostgreSQL | Web Application Engineering | Full Stack, Frontend, Backend Developer | 🟡 In Progress |
 | **04. Mobile Development** | React Native, Flutter, SQLite | Cross-Platform Applications | Mobile Developer, Mobile Engineer | 🟡 In Progress |
-| **05. Data Science & AI** | Python, JupyterLab, SQL, Scikit-learn | Analytics, ETL, & Predictive ML | Data Analyst, Junior Data Scientist | 🟢 Complete |
-| **06. Cybersecurity** | Wireshark, Nmap, OWASP ZAP, Wazuh | Threat Analysis & System Hardening | Cybersecurity Analyst, SOC Analyst | 🟢 Complete |
-| **07. DevSecOps** | OpenTofu, Ansible, K3s, Forgejo, Argo | CI/CD, GitOps, & IaC Automation | DevSecOps Engineer, Platform Engineer | 🟢 Complete |
-| **08. Databases & ORMs** | PostgreSQL, Prisma, Drizzle, DBeaver | Schema Design & Query Tuning | Backend Engineer, Database Admin | 🟢 Complete |
-| **09. SaaS Integration** | Inngest, Sanity, Neon Postgres | Cloud Services & Hybrid Architecture | Cloud Solutions Architect, Full Stack | 🟢 Complete |
+| **05. Data Science & AI** | Python, JupyterLab, SQL, Scikit-learn | Analytics, ETL, & Predictive ML | Data Analyst, Junior Data Scientist | 🟡 In Progress |
+| **06. Cybersecurity** | Wireshark, Nmap, OWASP ZAP, Wazuh | Threat Analysis & System Hardening | Cybersecurity Analyst, SOC Analyst | 🟡 In Progress |
+| **07. DevSecOps** | OpenTofu, Ansible, K3s, Forgejo, Argo | CI/CD, GitOps, & IaC Automation | DevSecOps Engineer, Platform Engineer | 🟡 In Progress |
+| **08. Databases & ORMs** | PostgreSQL, Prisma, Drizzle, DBeaver | Schema Design & Query Tuning | Backend Engineer, Database Admin | 🟡 In Progress |
+| **09. SaaS Integration** | Inngest, Sanity, Neon Postgres | Cloud Services & Hybrid Architecture | Cloud Solutions Architect, Full Stack | 🟡 In Progress |
 | **10. AI & Generative AI** | PyTorch, Ollama, Qdrant, LangChain, MCP, A2A | Agent Workflows, RAG, & Local LLM Ops | AI Application Engineer, RAG Developer | 🟡 In Progress |
 
 ---
