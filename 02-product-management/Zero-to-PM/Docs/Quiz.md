@@ -1,5 +1,3 @@
-# [GENERATING: Quiz & Test Bank - The Zero-to-One Product Manager]
-
 # Quiz & Test Bank: The Zero-to-One Product Manager
 
 ## Complete Assessment Package with Answer Keys
