@@ -745,7 +745,8 @@ A typical capstone may include:
 
 | Track | Primary FOSS Tools and Artifacts | Core Focus | Example Roles | Status |
 | --- | --- | --- | --- | --- |
-| **01. Architecture** | C4, ADRs, Mermaid, PlantUML, OpenAPI | System Design & Technical Strategy | Software Architect, Solution Architect | 🟢 Complete |
+| **00. Languages & Tools** | Python, JavaScript, TypeScript, V8, Node.js, Git | Core Syntax, Runtime Mechanics, & CLI Tooling | Software Engineer, Systems Developer | 🟢 Complete |
+| **01. Architecture** | C4, ADRs, Mermaid, PlantUML, OpenAPI | System Design & Technical Strategy | Software Architect, Solution Architect | 🟡 In Progress |
 | **02. Product Management** | PRDs, Penpot, OpenProject, Matomo | Product Discovery & Delivery | Product Manager, Product Owner | 🟡 In Progress |
 | **03. Full Stack Web** | TypeScript, Next.js, Node.js, PostgreSQL | Web Application Engineering | Full Stack, Frontend, Backend Developer | 🟡 In Progress |
 | **04. Mobile Development** | React Native, Flutter, SQLite | Cross-Platform Applications | Mobile Developer, Mobile Engineer | 🟡 In Progress |
