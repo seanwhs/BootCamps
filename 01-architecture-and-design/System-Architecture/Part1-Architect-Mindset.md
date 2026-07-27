@@ -267,21 +267,11 @@ Evaluate deployment container choices for Day 1.
 
 | Anticipated Change | Impacted Layer | Architectural Cost Analysis |
 | --- | --- | --- |
-| **Swap Payment Provider (e.g., Stripe $\rightarrow$ Adyen)** | **Infrastructure**<br> | **Zero core changes.** Create a new `AdyenPaymentGateway` adapter implementing the existing `PaymentGateway` port and update `container.ts`.
-
- |
-| **Add a Mobile Client App** | **Interface Adapters**<br> | **Zero core changes.** Expose new API routes returning DTOs; existing use cases remain unchanged.
-
- |
-| **Migrate Database (e.g., SQLite $\rightarrow$ Postgres)** | **Infrastructure**<br> | **Zero core changes.** Swap SQL repository adapter implementations.
-
- |
-| **Introduce Loyalty Program Rules** | **Domain**<br> | **Intended domain update.** Changes business rules; requires explicit domain entity modifications.
-
- |
-| **Extract Inventory into a Microservice** | **Infrastructure Container Root**<br> | **Zero core changes.** Swap in-process event buses for a broker adapter (e.g., RabbitMQ); domain logic remains intact.
-
- |
+| **Swap Payment Provider (e.g., Stripe $\rightarrow$ Adyen)** | **Infrastructure** | **Zero core changes.** Create a new `AdyenPaymentGateway` adapter implementing the existing `PaymentGateway` port and update `container.ts`. |
+| **Add a Mobile Client App** | **Interface Adapters** | **Zero core changes.** Expose new API routes returning DTOs; existing use cases remain unchanged. |
+| **Migrate Database (e.g., SQLite $\rightarrow$ Postgres)** | **Infrastructure** | **Zero core changes.** Swap SQL repository adapter implementations. |
+| **Introduce Loyalty Program Rules** | **Domain** | **Intended domain update.** Changes business rules; requires explicit domain entity modifications. |
+| **Extract Inventory into a Microservice** | **Infrastructure Container Root** | **Zero core changes.** Swap in-process event buses for a broker adapter (e.g., RabbitMQ); domain logic remains intact. |
 
 ---
 
