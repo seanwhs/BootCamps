@@ -14,7 +14,7 @@ Think of building a skyscraper:
 ---
 
 ## 1. At a Glance: Architecture vs. Design
-
+```
 | Aspect | System Architecture | System Design |
 | --- | --- | --- |
 | **Level of Zoom** | **Macro** (The big picture)
@@ -48,7 +48,7 @@ Think of building a skyscraper:
  | Software Engineers, Code Reviewers
 
  |
-
+```
 ---
 
 ## 2. Architecture vs. Code: The Core Distinction
