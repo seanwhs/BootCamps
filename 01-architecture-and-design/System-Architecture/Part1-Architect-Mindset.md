@@ -17,37 +17,13 @@ Think of building a skyscraper:
 
 | Aspect | System Architecture | System Design |
 | --- | --- | --- |
-| **Level of Zoom** | **Macro** (The big picture)
-
- | **Micro** (The implementation)
-
- |
-| **Primary Focus** | High-level structure, boundaries, and non-functional trade-offs
-
- | Component internals, algorithms, and data models
-
- |
-| **Core Lens** | **Cost of Change** & Quality Attributes (Performance, Resilience, Security)
-
- | **Correctness** & Functional Requirements fulfillment
-
- |
-| **Key Question** | *"What are the main pieces and how do they communicate?"*<br> | *"How do we build this specific piece to meet specifications?"*<br> |
-| **Decisions Made** | Monolith vs. Microservices, DB paradigms (SQL/NoSQL), Clean/Hexagonal boundaries, Event persistence strategies
-
- | API contracts, class hierarchies, schema indexes, caching decorators
-
- |
-| **Reversibility** | **Irreversible / High Cost** (Architectural One-Way Doors)
-
- | **Reversible / Low Cost** (Refactorable in a PR)
-
- |
-| **Target Audience** | Stakeholders, Tech Leads, Engineering Directors
-
- | Software Engineers, Code Reviewers
-
- |
+| **Level of Zoom** | **Macro** (The big picture) | **Micro** (The implementation) |
+| **Primary Focus** | High-level structure, boundaries, and non-functional trade-offs | Component internals, algorithms, and data models |
+| **Core Lens** | **Cost of Change** & Quality Attributes (Performance, Resilience, Security) | **Correctness** & Functional Requirements fulfillment |
+| **Key Question** | *"What are the main pieces and how do they communicate?"* | *"How do we build this specific piece to meet specifications?"* |
+| **Decisions Made** | Monolith vs. Microservices, DB paradigms (SQL/NoSQL), Clean/Hexagonal boundaries, Event persistence strategies | API contracts, class hierarchies, schema indexes, caching decorators |
+| **Reversibility** | **Irreversible / High Cost** (Architectural One-Way Doors) | **Reversible / Low Cost** (Refactorable in a PR) |
+| **Target Audience** | Stakeholders, Tech Leads, Engineering Directors | Software Engineers, Code Reviewers |
 
 ---
 
