@@ -8,32 +8,32 @@ This comprehensive reference manual maps out the core object methods, architectu
 
 Every object in Scikit-Learn adheres to a strict, predictable interface. Depending on whether an object is a transformer, a model, or a full pipeline, it implements a combination of the following core methods:
 
-| Method | Applicable Object Type | Detailed Signature & Description |
-| --- | --- | --- |
-| `fit(X, y=None, **fit_params)` | Transformers, Models, Pipelines | Computes internal parameters (e.g., means, variances, weights) based on training data $X$ and optional target vector $y$. Always returns `self` to enable method chaining.
+* **`fit(X, y=None, **fit_params)`**: Applicable to Transformers, Models, and Pipelines. Computes internal parameters (e.g., means, variances, weights) based on training data $X$ and optional target vector $y$. Always returns `self` to enable method chaining.
 
- |
-| `transform(X)` | Preprocessors, Transformers, Dimensionality Reduction | Applies learned internal parameters to transform input data $X$ into a modified, scaled, or projected representation.
 
- |
-| `fit_transform(X, y=None, **fit_params)` | Transformers, Preprocessors | Optimized shorthand method that calls `fit()` and `transform()` sequentially on the same dataset in a single highly efficient pass.
+* **`transform(X)`**: Applicable to Preprocessors, Transformers, and Dimensionality Reduction. Applies learned internal parameters to transform input data $X$ into a modified, scaled, or projected representation.
 
- |
-| `predict(X)` | Supervised Models, Pipelines | Applies learned mathematical rules to generate categorical class labels or continuous regression targets for input data $X$.
 
- |
-| `predict_proba(X)` | Classification Models, Pipelines | Computes class membership probabilities for classification tasks. Returns a 2D NumPy array of shape `(n_samples, n_classes)` representing likelihood distributions.
+* **`fit_transform(X, y=None, **fit_params)`**: Applicable to Transformers and Preprocessors. Optimized shorthand method that calls `fit()` and `transform()` sequentially on the same dataset in a single highly efficient pass.
 
- |
-| `predict_log_proba(X)` | Classification Models, Pipelines | Computes the natural logarithm of class probabilities, often used for numerical stability in advanced probabilistic modeling. |
-| `decision_function(X)` | Linear & Kernel Models, Support Vector Machines | Computes confidence scores or distance metrics relative to the separating hyperplane for each class.
 
- |
-| `score(X, y)` | Supervised Models, Pipelines | Computes the default evaluation metric for the model (e.g., Mean Accuracy for classifiers, Coefficient of Determination $R^2$ score for regressors).
+* **`predict(X)`**: Applicable to Supervised Models and Pipelines. Applies learned mathematical rules to generate categorical class labels or continuous regression targets for input data $X$.
 
- |
-| `get_params(deep=True)` | All Estimators | Retrieves a dictionary of all constructor parameters (hyperparameters) and their current assigned values for meta-estimators and grid search optimization. |
-| `set_params(**params)` | All Estimators | Safely updates the hyperparameters of an estimator or pipeline step post-instantiation, returning `self` for fluent configuration. |
+
+* **`predict_proba(X)`**: Applicable to Classification Models and Pipelines. Computes class membership probabilities for classification tasks. Returns a 2D NumPy array of shape `(n_samples, n_classes)` representing likelihood distributions.
+
+
+* **`predict_log_proba(X)`**: Applicable to Classification Models and Pipelines. Computes the natural logarithm of class probabilities, often used for numerical stability in advanced probabilistic modeling.
+
+
+* **`decision_function(X)`**: Applicable to Linear & Kernel Models and Support Vector Machines. Computes confidence scores or distance metrics relative to the separating hyperplane for each class.
+
+
+* **`score(X, y)`**: Applicable to Supervised Models and Pipelines. Computes the default evaluation metric for the model (e.g., Mean Accuracy for classifiers, Coefficient of Determination $R^2$ score for regressors).
+
+
+* **`get_params(deep=True)`**: Applicable to All Estimators. Retrieves a dictionary of all constructor parameters (hyperparameters) and their current assigned values for meta-estimators and grid search optimization.
+* **`set_params(**params)`**: Applicable to All Estimators. Safely updates the hyperparameters of an estimator or pipeline step post-instantiation, returning `self` for fluent configuration.
 
 ---
 
