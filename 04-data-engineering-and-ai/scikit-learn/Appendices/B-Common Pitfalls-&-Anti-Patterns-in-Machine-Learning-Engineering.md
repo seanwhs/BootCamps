@@ -1,8 +1,8 @@
-## Appendix B: Common Pitfalls & Anti-Patterns in Machine Learning Engineering
+## Appendix B: Machine Learning Anti-Patterns, Silent Failures & Architectural Pitfalls
 
 Even experienced software engineers can introduce subtle bugs when transitioning into machine learning development. Because machine learning models learn statistical patterns rather than explicit logic, errors often manifest not as hard application crashes, but as silent performance degradation, falsely inflated accuracy metrics, or production runtime failures.
 
-This reference manual outlines the most common machine learning anti-patterns and how to avoid them using idiomatic Scikit-Learn patterns.
+This master reference manual outlines the most critical machine learning anti-patterns, why they break systems, and how to avoid them using idiomatic Scikit-Learn patterns and robust software engineering safeguards.
 
 ---
 
@@ -10,7 +10,7 @@ This reference manual outlines the most common machine learning anti-patterns an
 
 #### The Mistake
 
-Computing normalization statistics (like mean and standard deviation) or imputing missing values across the *entire* dataset before splitting it into training and testing sets.
+Computing normalization statistics (like mean, standard deviation, or variance) or imputing missing values across the *entire* dataset before splitting it into training and testing sets.
 
 ```python
 # [ANTI-PATTERN] - DO NOT DO THIS
@@ -103,3 +103,35 @@ A naive model that predicts "Legitimate" 100% of the time achieves **99% accurac
 #### The Correct Fix
 
 Always pair accuracy with precision, recall, F1-score, and ROC-AUC metrics, or utilize stratified cross-validation to maintain class balance proportions across evaluation folds.
+
+---
+
+### 4. Target Leakage (Including Future or Post-Event Information)
+
+#### The Mistake
+
+Including features in your training matrix $X$ that are derived from, or logically occur *after*, the target variable $y$ has already been realized.
+
+#### Why It Fails
+
+Your model achieves near-perfect cross-validation performance because it has direct access to the "answer key" hidden within the feature columns. However, in production, those future features will not exist at the exact moment a prediction needs to be made.
+
+#### The Correct Fix
+
+Rigorously audit your feature engineering pipeline to ensure temporal causality. Every feature used for inference must be strictly available prior to or at the exact timestamp of prediction.
+
+---
+
+### 5. Over-Fitting via Hyperparameter Snooping (Data Leakage in CV)
+
+#### The Mistake
+
+Tuning model hyperparameters manually or iteratively using the test set (or validation set) as a tight feedback loop.
+
+#### Why It Fails
+
+While your validation scores will look exceptional, you have effectively baked the test set characteristics into your hyperparameter choices. The model will fail to generalize to genuinely independent operational data.
+
+#### The Correct Fix
+
+Utilize a strict three-way split (Train, Validation, Test) or nested cross-validation (`GridSearchCV`) where the test set remains completely locked away and untouched until the final model architecture has been fully frozen.
