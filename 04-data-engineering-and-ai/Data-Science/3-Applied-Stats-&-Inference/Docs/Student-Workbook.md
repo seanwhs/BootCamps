@@ -1,8 +1,6 @@
 # PHASE 3: APPLIED STATISTICS & HYPOTHESIS TESTING
 ## STUDENT WORKBOOK
 
-**[GENERATING: Complete Student Workbook]**
-
 This workbook contains exercises, practice problems, and hands-on activities for each module of Phase 3. Each section includes learning objectives, key concepts, practice problems, and reflection questions.
 
 ---
