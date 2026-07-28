@@ -629,5 +629,3 @@ What is the dependent variable?
 ---
 
 **Next Appendix: C — Complete Reference: Regression & Diagnostics**
-
-Type "next" for Appendix C!
