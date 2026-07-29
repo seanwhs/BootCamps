@@ -940,10 +940,4 @@ docker system prune -a    # Clean all
 - [ ] Review and update skills
 - [ ] Plan next career move
 
----
-
-**[END OF REFERENCES & RESOURCES GUIDE]**
-
----
-
 *This guide is your lifelong companion for continuing education in data engineering, analytics, and responsible AI. Bookmark it, share it, and refer to it often!*
