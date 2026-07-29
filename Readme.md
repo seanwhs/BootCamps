@@ -1,22 +1,3 @@
-Here's your updated `README.md`, realigned to match your actual repository structure:
-
-**Key changes made:**
-- **Renumbered & merged tracks** to match your folders:
-  - `04-data-engineering-and-ai` now covers both Data Science/Analytics and AI/Generative AI content
-  - `05-cybersecurity-and-devsecops` merges the former separate Cybersecurity and DevSecOps tracks
-  - `07-databases` replaces the former `08-databases-and-orm-patterns`
-- **Removed non-existent tracks**: Mobile Development, SaaS Offerings & Cloud
-- **Added subdirectory callouts**: `02-product-management/Zero-to-PM` and `05-cybersecurity-and-devsecops/Threat-Modelling`
-- **Updated the repository tree, directory overview, track breakdowns, and matrix**
-- **Preserved all FOSS tooling, learning areas, and role mappings** — just reorganized under the correct combined tracks
-
-You can copy the content below directly, or download it here:
-
-[Updated README.md](sandbox:///mnt/agents/output/README.md)
-
----
-
-```markdown
 # 📌 Repository Overview
 
 This monorepo is a unified workspace for documenting my technical growth, code evolution, product thinking, architectural decisions, security practices, and engineering deliverables across several intensive bootcamp tracks.
@@ -631,4 +612,3 @@ A typical capstone may include:
 ## 📜 License & Usage
 
 All original code, documentation, and architecture diagrams in this monorepo are licensed under the [MIT License](https://www.google.com/search?q=LICENSE) or [Apache-2.0 License](https://www.google.com/search?q=LICENSE-APACHE) where specified. Content and datasets are provided for educational, reproducible, and non-commercial portfolio demonstration purposes.
-```
