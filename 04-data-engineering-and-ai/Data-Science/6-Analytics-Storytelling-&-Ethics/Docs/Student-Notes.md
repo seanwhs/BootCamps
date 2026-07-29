@@ -1,6 +1,3 @@
-# [GENERATED: Student Workbook]
-# [STARTING: Student Notes - Executive Decision Pipeline]
-
 # Executive Decision Pipeline: Student Notes
 
 ## Complete Lecture Notes & Reference Guide
@@ -1064,11 +1061,5 @@ mitigator.fit(X_train, y_train)
 ### Final Thought
 
 > Data is just data. It's what you do with it that matters.
-
----
-
-**[END OF STUDENT NOTES]**
-
----
 
 *These notes are your companion throughout the Executive Decision Pipeline course. Review them regularly and add your own insights to make them truly yours!*
