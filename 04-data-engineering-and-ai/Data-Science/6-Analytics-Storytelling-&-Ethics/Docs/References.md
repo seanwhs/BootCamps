@@ -1,6 +1,3 @@
-# [GENERATED: Quiz & Test Bank]
-# [STARTING: References & Resources Guide]
-
 # Executive Decision Pipeline: References & Resources Guide
 
 ## Complete Reference Guide for Continued Learning
