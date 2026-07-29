@@ -1,6 +1,3 @@
-# [GENERATED: Student Notes]
-# [STARTING: Quiz & Test Bank - Executive Decision Pipeline]
-
 # Executive Decision Pipeline: Quiz & Test Bank
 ## Complete Assessment Package with Answer Keys
 
@@ -2012,11 +2009,5 @@ demonstrating proficiency in:
 **Grade:** __________________
 
 **Instructor:** __________________
-
----
-
-**[END OF QUIZ & TEST BANK]**
-
----
 
 *This comprehensive test bank provides over 300 questions covering all aspects of the Executive Decision Pipeline course. Use it for assessment, review, and certification preparation.*
