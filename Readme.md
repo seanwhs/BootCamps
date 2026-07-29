@@ -7,7 +7,7 @@ The work spans the complete technology lifecycle:
 1. Discovering a customer or business problem.
 2. Defining product requirements and measurable outcomes.
 3. Designing the system and documenting architectural decisions.
-4. Building web, data, AI, and security capabilities.
+4. Building web, mobile, data, AI, and security capabilities.
 5. Testing and securing the application.
 6. Provisioning infrastructure through code.
 7. Automating integration and deployment.
@@ -72,6 +72,9 @@ The bootcamps are designed to build foundational and portfolio-ready skills rele
 * Full Stack Developer
 * Frontend Developer
 * Backend Developer
+* Mobile Application Developer
+* React Native Developer
+* Flutter Developer
 * Data Analyst
 * Junior Data Scientist
 * Machine Learning Engineer
@@ -87,7 +90,11 @@ The bootcamps are designed to build foundational and portfolio-ready skills rele
 * Infrastructure Automation Engineer
 * AI Application Engineer
 * Generative AI Engineer
+* RAG Engineer
+* AI Platform Engineer
 * Database Administrator
+* Cloud Solutions Architect
+* SaaS Engineer
 * Technical Lead or Engineering Manager
 
 Role readiness depends on prior experience, project depth, and the requirements of each organization. The repository is intended to demonstrate practical capabilities and transferable engineering knowledge rather than guarantee qualification for a specific position.
@@ -106,7 +113,10 @@ Role readiness depends on prior experience, project depth, and the requirements 
 ├── 04-data-engineering-and-ai
 ├── 05-cybersecurity-and-devsecops
 │   └── Threat-Modelling
+├── 06-saas-offerings
 ├── 07-databases
+├── 08-ai-and-generative-ai
+├── 09-mobile-development
 └── README.md
 ```
 
@@ -116,9 +126,12 @@ Role readiness depends on prior experience, project depth, and the requirements 
 * **`01-architecture-and-design`** — Architectural blueprints, system design patterns, C4 diagrams, ADRs, Domain-Driven Design, and event-driven specs.
 * **`02-product-management`** — Product specs, discovery frameworks, user story mapping, roadmaps, release planning, and outcome-driven metrics. Includes the `Zero-to-PM` subfolder with foundational product-management coursework.
 * **`03-full-stack-web-dev`** — End-to-end web engineering modules covering frontend UI frameworks, backend HTTP APIs, databases, server-side rendering, and production web deployment.
-* **`04-data-engineering-and-ai`** — Exploratory data analysis, ETL/ELT pipelines, analytical SQL, statistical modeling, machine learning workflows, local inference, embeddings, vector databases, Retrieval-Augmented Generation (RAG), and agentic AI systems.
+* **`04-data-engineering-and-ai`** — Exploratory data analysis, ETL/ELT pipelines, analytical SQL, statistical modeling, and machine learning workflows.
 * **`05-cybersecurity-and-devsecops`** — Threat modeling, defensive security, host hardening, packet analysis, OWASP vulnerability assessments, SIEM rules, incident triage, CI/CD automation, Infrastructure as Code, container orchestration, GitOps, secrets management, and observability. Includes the `Threat-Modelling` subfolder with structured threat-analysis exercises.
+* **`06-saas-offerings`** — Architectural evaluations, integration patterns, and trade-off analysis for managed SaaS solutions including serverless databases, headless CMS, identity platforms, and durable job orchestration.
 * **`07-databases`** — Relational schema design, normalization, query optimization (`EXPLAIN ANALYZE`), indexing strategies, and ORM abstractions (Active Record vs. Data Mapper).
+* **`08-ai-and-generative-ai`** — Local inference, embeddings, vector databases, Retrieval-Augmented Generation (RAG), Model Context Protocol (MCP), Agent-to-Agent (A2A) orchestration, and LLM evaluation frameworks.
+* **`09-mobile-development`** — Cross-platform mobile solutions using React Native and Flutter, offline-first architectures, SQLite local caching, background sync, and mobile-specific security and accessibility practices.
 
 ---
 
@@ -304,9 +317,9 @@ This track develops practical experience in delivering complete web products. It
 
 ## 4. 📊 Data Engineering & AI
 
-> **Key Focus:** Transforming raw data into reproducible insights and production-ready AI systems through data pipelines, statistical analysis, machine learning, and generative AI integration.
+> **Key Focus:** Transforming raw data into reproducible insights through preparation, statistical analysis, visualization, and predictive modeling.
 
-This track covers the complete data and AI workflow: collecting and validating data, building ETL pipelines, conducting exploratory analysis, engineering features, training models, implementing RAG systems, and deploying local inference — all with an emphasis on open-source tooling and responsible AI practices.
+This track covers the complete data workflow: collecting and validating data, cleaning datasets, conducting exploratory analysis, engineering features, training models, evaluating results, and communicating findings.
 
 ### FOSS Tooling
 
@@ -321,13 +334,6 @@ This track covers the complete data and AI workflow: collecting and validating d
 * DVC for data and experiment versioning
 * MLflow for experiment tracking
 * Apache Superset and Metabase
-* Hugging Face Transformers libraries
-* llama.cpp, Ollama, and vLLM
-* LangChain and Haystack
-* Qdrant and Chroma
-* Model Context Protocol (MCP) SDKs
-* Agent-to-Agent (A2A) protocols
-* FastAPI
 
 ### Core Learning Areas
 
@@ -344,23 +350,6 @@ This track covers the complete data and AI workflow: collecting and validating d
 * ETL and reproducible data pipelines
 * Dashboard design and data storytelling
 * Dataset licensing, privacy, and responsible use
-* Neural networks and transformer concepts
-* Local model inference
-* Embeddings and semantic search
-* Vector indexing and retrieval
-* Retrieval-Augmented Generation (RAG)
-* Document ingestion, parsing, and chunking
-* Prompt design and structured outputs
-* Tool calling and agent workflows
-* Model Context Protocol (MCP) server & client integration
-* Agent-to-Agent (A2A) multi-agent orchestration and task delegation
-* Model and response evaluation
-* Hallucination detection and mitigation
-* Prompt-injection and data-poisoning risks
-* Privacy and sensitive-data handling
-* Model, prompt, and dataset versioning
-* Latency, quality, and resource optimization
-* AI observability and audit logging
 
 ### Featured Projects
 
@@ -372,16 +361,6 @@ This track covers the complete data and AI workflow: collecting and validating d
 * MLflow experiment history documenting parameters, metrics, and artifacts.
 * Interactive analytics dashboard using Apache Superset or Metabase.
 * Data-quality assessment covering completeness, consistency, validity, and bias.
-* Local RAG assistant for querying technical documentation.
-* Document-ingestion pipeline with parsing, chunking, embeddings, indexing, retrieval, and citations using LangChain and Qdrant.
-* Self-hosted vector search using Qdrant or Chroma.
-* AI agent capable of selecting approved tools and returning validated structured results via MCP.
-* Multi-agent orchestration layer leveraging A2A protocols for delegated code generation and review.
-* Evaluation framework comparing relevance, groundedness, latency, and resource usage.
-* FastAPI service exposing a locally hosted language model.
-* Prompt-injection defense and untrusted-content isolation experiments.
-* AI application with authentication, conversation history, retrieval, and observability.
-* Model card documenting intended use, limitations, evaluation results, and licensing.
 
 ### Roles Supported
 
@@ -392,13 +371,6 @@ This track covers the complete data and AI workflow: collecting and validating d
 * Junior Machine Learning Engineer
 * Data Quality Analyst
 * Reporting and Visualization Specialist
-* AI Application Engineer
-* Generative AI Engineer
-* Applied AI Developer
-* RAG Engineer
-* AI Platform Engineer
-* Machine Learning Operations Engineer
-* AI Solutions Developer
 
 ---
 
@@ -532,7 +504,54 @@ This track develops defensive-security skills through authorized labs and contro
 
 ---
 
-## 6. 🗄️ Databases
+## 6. ☁️ SaaS Offerings
+
+> **Key Focus:** Integrating managed SaaS solutions — such as serverless database infrastructure, headless content platforms, identity services, and serverless background job orchestration — into modern web architectures.
+
+This track focuses on evaluating trade-offs between self-hosting and managed SaaS offerings, designing hybrid architectures, managing integration boundaries, and leveraging cloud-native vendor solutions. It emphasizes understanding when to buy versus build, managing vendor lock-in, and securing third-party integrations.
+
+### Core Managed SaaS Technologies
+
+* **Serverless PostgreSQL:** Neon (branching, autoscaling, serverless Postgres)
+* **Workflow & Job Orchestration:** Inngest (event-driven durable execution, step functions, serverless background jobs)
+* **Content Platforms:** Sanity (headless CMS, structured content, GROQ/GraphQL API integration)
+* **Identity & Authentication:** Clerk (user management, session handling, organization-based access control)
+
+### Core Learning Areas
+
+* Trade-off analysis: Self-Hosted vs. Managed SaaS platforms
+* Database branching, point-in-time recovery, and serverless scaling with Neon
+* Durable execution, background job orchestration, retries, and step-function flows with Inngest
+* Structured content modeling, webhooks, and live content preview workflows with Sanity
+* Authentication, session management, and multi-tenant organization access with Clerk
+* Managing API keys, webhooks, security boundaries, and vendor lock-in mitigation
+* Hybrid architecture design combining self-hosted and managed services
+* Cost modeling and operational overhead comparison
+* Data residency, compliance, and egress considerations
+* Fallback strategies and migration paths away from vendor-specific APIs
+
+### Featured Projects
+
+* Event-driven background task pipeline powered by Inngest for async notifications and data sync.
+* Headless e-commerce/blog engine utilizing Sanity CMS for structured content delivery and live previews.
+* Multi-environment database pipeline using Neon database branching for CI/CD preview deployments.
+* Multi-tenant application with Clerk-based authentication, organization switching, and role-based access.
+* Hybrid architecture document evaluating build-vs-buy decisions with total-cost-of-ownership analysis.
+* Webhook security implementation with signature verification, replay protection, and idempotency.
+* Vendor-agnostic abstraction layer allowing swap of underlying SaaS providers.
+
+### Roles Supported
+
+* Cloud Solutions Architect
+* SaaS Engineer
+* Full Stack Developer
+* Platform Engineer
+* Integration Engineer
+* Technical Product Manager
+
+---
+
+## 7. 🗄️ Databases
 
 > **Key Focus:** Designing, modeling, optimizing, and interacting with relational and non-relational database systems using native drivers and Object-Relational Mapping (ORM) frameworks.
 
@@ -569,6 +588,144 @@ This track explores database architecture, relational theory, document and key-v
 
 ---
 
+## 8. 🤖 AI & Generative AI
+
+> **Key Focus:** Developing, integrating, evaluating, and securing machine-learning and generative AI systems using open-source frameworks, agentic protocols, and license-verified models.
+
+This track combines machine-learning foundations with modern AI application development. It covers model training, local inference, embeddings, vector retrieval, retrieval-augmented generation (RAG), Model Context Protocol (MCP), Agent-to-Agent (A2A) orchestration, evaluation, and responsible AI engineering.
+
+### FOSS Tooling
+
+* PyTorch and TensorFlow
+* Scikit-learn
+* Hugging Face Transformers libraries
+* llama.cpp
+* Ollama
+* vLLM
+* LangChain and Haystack
+* Qdrant and Chroma
+* Model Context Protocol (MCP) SDKs
+* Agent-to-Agent (A2A) protocols
+* MLflow
+* JupyterLab
+* FastAPI
+* OpenTelemetry
+* Guardrails and validation libraries with verified open-source licenses
+
+> AI model weights and training datasets may have licenses that differ from the software used to run them. Every project should document and verify the license, permitted uses, limitations, and provenance of each model and dataset.
+
+### Core Learning Areas
+
+* Machine-learning fundamentals
+* Neural networks and transformer concepts
+* Local model inference
+* Embeddings and semantic search
+* Vector indexing and retrieval
+* Retrieval-Augmented Generation (RAG)
+* Document ingestion, parsing, and chunking
+* Prompt design and structured outputs
+* Tool calling and agent workflows
+* Model Context Protocol (MCP) server & client integration
+* Agent-to-Agent (A2A) multi-agent orchestration and task delegation
+* Model and response evaluation
+* Hallucination detection and mitigation
+* Prompt-injection and data-poisoning risks
+* Privacy and sensitive-data handling
+* Model, prompt, and dataset versioning
+* Latency, quality, and resource optimization
+* AI observability and audit logging
+
+### Featured Projects
+
+* Local RAG assistant for querying technical documentation.
+* Document-ingestion pipeline with parsing, chunking, embeddings, indexing, retrieval, and citations using LangChain and Qdrant.
+* Self-hosted vector search using Qdrant or Chroma.
+* AI agent capable of selecting approved tools and returning validated structured results via MCP.
+* Multi-agent orchestration layer leveraging A2A protocols for delegated code generation and review.
+* Evaluation framework comparing relevance, groundedness, latency, and resource usage.
+* FastAPI service exposing a locally hosted language model.
+* Prompt-injection defense and untrusted-content isolation experiments.
+* AI application with authentication, conversation history, retrieval, and observability.
+* Model card documenting intended use, limitations, evaluation results, and licensing.
+
+### Roles Supported
+
+* AI Application Engineer
+* Generative AI Engineer
+* Junior Machine Learning Engineer
+* Applied AI Developer
+* RAG Engineer
+* AI Platform Engineer
+* Machine Learning Operations Engineer
+* AI Solutions Developer
+
+---
+
+## 9. 📱 Mobile Development
+
+> **Key Focus:** Building responsive cross-platform applications with offline capabilities, secure local storage, reliable synchronization, and accessible mobile experiences.
+
+This track applies software-engineering principles to mobile environments, including navigation, application lifecycle management, device constraints, network reliability, local persistence, and platform-specific behavior. It emphasizes offline-first design, secure token handling, and performance on constrained devices.
+
+### Core Technologies and Concepts
+
+* React Native
+* Flutter and Dart
+* TypeScript
+* Mobile navigation and state management
+* SQLite and local persistence
+* Offline-first architecture
+* Background synchronization
+* UnifiedPush-compatible notification concepts
+* Secure local storage
+* API authentication and token handling
+* Mobile accessibility
+* Deep links and application links
+* Local diagnostics and error reporting
+* Unit, integration, and interface testing
+
+### Core Learning Areas
+
+* Cross-platform UI development with native rendering
+* Mobile navigation patterns (stack, tab, drawer)
+* State management across async boundaries
+* Local database design and SQLite optimization
+* Offline-first data flow with conflict resolution
+* Background task scheduling and sync strategies
+* Secure credential and token storage (Keychain/Keystore abstractions)
+* Biometric authentication integration
+* Push notification architecture and delivery reliability
+* Responsive layouts across screen sizes and orientations
+* Mobile-specific accessibility (screen readers, touch targets, color contrast)
+* Deep linking and universal link handling
+* Error boundaries and crash reporting
+* Bundle optimization and startup performance
+* Platform-specific build and deployment pipelines
+
+### Featured Projects
+
+* Cross-platform mobile application with SQLite persistence.
+* Offline-first workflow with queued changes and conflict resolution.
+* Authenticated mobile client connected to a self-hosted backend.
+* Caching and retry strategies for unreliable networks.
+* Secure handling of sessions and user preferences.
+* Reusable component library with responsive and accessible controls.
+* Automated tests for navigation, state transitions, API integration, and persistence.
+* Self-hosted CI workflow for linting, testing, and producing application builds.
+* Push notification integration with UnifiedPush-compatible provider.
+* Biometric-secured local vault for sensitive user data.
+
+### Roles Supported
+
+* Mobile Application Developer
+* React Native Developer
+* Flutter Developer
+* Cross-Platform Application Developer
+* Junior Mobile Engineer
+* Frontend Engineer with Mobile Focus
+
+---
+
 ## 🔗 Multidisciplinary Capstones
 
 The capstones connect several tracks to reflect how real-world technology products are researched, designed, implemented, secured, delivered, and operated.
@@ -577,10 +734,11 @@ A typical capstone may include:
 
 * Product vision, personas, PRD, roadmap, and success metrics.
 * C4 diagrams, threat models, data models, and ADRs.
-* Accessible full-stack application.
+* Accessible full-stack or mobile application.
 * PostgreSQL database and documented API contracts.
 * Data pipeline, analytics dashboard, or predictive model.
 * Locally hosted AI, RAG, or agentic capability.
+* SaaS integrations (headless CMS, serverless database, identity, job orchestration).
 * OpenTofu infrastructure and Ansible configuration.
 * Rootless container build using Podman.
 * Self-hosted CI/CD using Forgejo Actions or Woodpecker CI.
@@ -603,9 +761,12 @@ A typical capstone may include:
 | **01. Architecture** | C4, ADRs, Mermaid, PlantUML, OpenAPI | System Design & Technical Strategy | Software Architect, Solution Architect | 🟡 In Progress |
 | **02. Product Management** | PRDs, Penpot, OpenProject, Matomo | Product Discovery & Delivery | Product Manager, Product Owner | 🟡 In Progress |
 | **03. Full Stack Web** | TypeScript, Next.js, Node.js, PostgreSQL | Web Application Engineering | Full Stack, Frontend, Backend Developer | 🟡 In Progress |
-| **04. Data Engineering & AI** | Python, JupyterLab, SQL, Scikit-learn, PyTorch, Ollama, Qdrant, LangChain | Analytics, ETL, ML, RAG, & Local LLM Ops | Data Analyst, Junior Data Scientist, AI Application Engineer | 🟡 In Progress |
+| **04. Data Engineering & AI** | Python, JupyterLab, SQL, Scikit-learn | Analytics, ETL, & Predictive ML | Data Analyst, Junior Data Scientist | 🟡 In Progress |
 | **05. Cybersecurity & DevSecOps** | Wireshark, Nmap, OWASP ZAP, Wazuh, OpenTofu, Ansible, K3s, Forgejo, Argo | Threat Analysis, System Hardening, CI/CD, GitOps, & IaC | Cybersecurity Analyst, SOC Analyst, DevSecOps Engineer, Platform Engineer | 🟡 In Progress |
+| **06. SaaS Offerings** | Neon, Sanity, Inngest, Clerk | Managed Cloud Integration & Hybrid Architecture | Cloud Solutions Architect, SaaS Engineer, Full Stack Developer | 🟡 In Progress |
 | **07. Databases** | PostgreSQL, Prisma, Drizzle, DBeaver | Schema Design & Query Tuning | Backend Engineer, Database Admin | 🟡 In Progress |
+| **08. AI & Generative AI** | PyTorch, Ollama, Qdrant, LangChain, MCP, A2A | Agent Workflows, RAG, & Local LLM Ops | AI Application Engineer, RAG Developer | 🟡 In Progress |
+| **09. Mobile Development** | React Native, Flutter, SQLite | Cross-Platform Applications | Mobile Developer, Mobile Engineer | 🟡 In Progress |
 
 ---
 
