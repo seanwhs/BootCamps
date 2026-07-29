@@ -108,11 +108,9 @@ Role readiness depends on prior experience, project depth, and the requirements 
 ├── 00-languages-and-tools
 ├── 01-architecture-and-design
 ├── 02-product-management
-│   └── Zero-to-PM
 ├── 03-full-stack-web-dev
 ├── 04-data-engineering-and-ai
 ├── 05-cybersecurity-and-devsecops
-│   └── Threat-Modelling
 ├── 06-saas-offerings
 ├── 07-databases
 ├── 08-ai-and-generative-ai
