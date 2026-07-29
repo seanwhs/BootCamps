@@ -1,6 +1,3 @@
-# [GENERATED: Comprehensive Course Slide Deck]
-# [STARTING: Student Workbook - Executive Decision Pipeline]
-
 # Executive Decision Pipeline: Student Workbook
 
 ## Complete Hands-On Guide
@@ -1441,11 +1438,5 @@ _________________________________________________________________
 3. Share your Executive Decision Pack with stakeholders
 4. Continue learning and growing
 5. Make data-driven decisions!
-
----
-
-**[END OF STUDENT WORKBOOK]**
-
----
 
 *This workbook is your guide to mastering the Executive Decision Pipeline. Keep it handy for reference and review!*
