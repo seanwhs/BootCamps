@@ -1,11 +1,5 @@
 # Part 3: Stealth Reconnaissance & Asynchronous Tooling
 
-```
-[STARTING: Part 3 - Stealth Reconnaissance & Asynchronous Tooling]
-[COMPLETED: Part 2 - High-Speed Packet Sniffing & Asynchronous Integration]
-[GENERATING: Part 3, Section 1 - Async Scanner Foundation]
-```
-
 ## Section 1: Async Scanner Foundation
 
 ### The Target
