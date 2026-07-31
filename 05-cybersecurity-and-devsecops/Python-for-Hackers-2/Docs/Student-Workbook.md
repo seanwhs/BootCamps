@@ -3,16 +3,6 @@
 
 ### A Complete Hands-On Learning Companion
 
----
-
-```
-[STARTING: Student Workbook Generation]
-[COMPLETED: Slide Outline]
-[GENERATING: Comprehensive Student Workbook]
-```
-
----
-
 ## TABLE OF CONTENTS
 
 ### Part 0: Introduction & Setup
