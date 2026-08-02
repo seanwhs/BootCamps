@@ -363,9 +363,3 @@ With the foundation laid, you're ready to embark on this journey. Each part is d
 **The next step is Part 1: Foundations of Data Architecture and Data Modeling,** where you'll start by understanding the fundamental principles that underpin every data platform.
 
 **Remember:** This is a hands-on series. The real learning happens when you code, run, and experiment. Don't just read—do.
-
----
-
-**[GENERATED: Part 0: Introduction]**
-
-**[STARTING: Phase 1, Part 1: Foundations of Data Architecture and Data Modeling]**
