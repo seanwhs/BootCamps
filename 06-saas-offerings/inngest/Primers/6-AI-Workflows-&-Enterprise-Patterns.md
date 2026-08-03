@@ -1,0 +1,978 @@
+# Primer 6: AI Workflows & Enterprise Patterns
+
+**Estimated Time**: 20 Minutes
+**Prerequisites**: Completion of Primer 5, or basic understanding of Inngest concepts. Familiarity with AI/LLM concepts assumed.
+
+---
+
+## 1. The AI Workflow Revolution
+
+AI is transforming how applications are built. From content generation to intelligent automation, AI workflows are becoming central to modern applications. Inngest provides powerful primitives for building reliable, scalable AI workflows that handle the unique challenges of LLM integration.
+
+**What You'll Learn:**
+- Building AI-powered workflows with durable execution
+- Multi-agent orchestration patterns
+- Retrieval-Augmented Generation (RAG) workflows
+- Human review loops for AI outputs
+- Long-running AI tasks and batch processing
+
+---
+
+## 2. AI Workflow Basics
+
+### A. The Challenge of AI Integration
+
+Integrating AI into workflows presents unique challenges:
+
+1. **Unpredictable Latency**: LLM calls can take seconds to minutes
+2. **Rate Limits**: API providers have strict rate limits
+3. **Cost Sensitivity**: Each call costs money
+4. **Quality Variability**: Outputs can be inconsistent
+5. **Human Review**: Many AI outputs need human validation
+
+Inngest's durable execution handles all of these challenges automatically.
+
+### B. Setting Up AI Integration
+
+First, configure your AI client:
+
+```typescript
+// src/lib/ai/client.ts
+import OpenAI from "openai";
+import { config } from "@/lib/config";
+
+// Initialize OpenAI client
+export const openai = new OpenAI({
+  apiKey: config.OPENAI_API_KEY,
+});
+
+// Configure AI models
+export const models = {
+  fast: "gpt-4o-mini",
+  standard: "gpt-4o",
+  premium: "gpt-4o",
+} as const;
+
+// AI prompt templates
+export const prompts = {
+  contentGeneration: `
+    You are a professional content writer.
+    Generate high-quality content based on the following prompt.
+    Be thorough, engaging, and well-structured.
+    
+    Prompt: {prompt}
+    
+    Format: {format}
+  `,
+  summarization: `
+    Summarize the following text concisely.
+    Focus on the key points and main takeaways.
+    
+    Text: {text}
+    
+    Desired length: {length} words
+  `,
+  analysis: `
+    Analyze the following data and provide insights.
+    Identify patterns, trends, and recommendations.
+    
+    Data: {data}
+    
+    Analysis type: {type}
+  `,
+};
+```
+
+---
+
+## 3. Basic AI Content Generation Workflow
+
+### A. Simple AI Generation
+
+Let's build a basic AI content generation workflow:
+
+```typescript
+// src/inngest/functions/ai-content-generation.ts
+import { inngest } from "@/inngest/client";
+import { openai, models, prompts } from "@/lib/ai/client";
+import { z } from "zod";
+
+const AIContentRequestSchema = z.object({
+  generationId: z.string().uuid(),
+  prompt: z.string().min(10),
+  format: z.enum(["blog-post", "social-media", "email", "article"]),
+  userId: z.string().uuid(),
+  options: z.object({
+    length: z.string().optional(),
+    tone: z.string().optional(),
+    language: z.string().default("en"),
+  }).optional(),
+});
+
+export const aiContentGenerationWorkflow = inngest.createFunction(
+  {
+    id: "ai-content-generation-workflow",
+    name: "AI Content Generation",
+    description: "Generate content using LLM with durable execution",
+    
+    retries: 3,
+    retryDelay: "5s",
+    
+    rateLimit: {
+      limit: 50,
+      period: "1m",
+    },
+  },
+  { event: "ai/content-requested" },
+  async ({ event, step, logger }) => {
+    const validated = AIContentRequestSchema.parse(event.data);
+    const { generationId, prompt, format, userId, options } = validated;
+
+    logger.info("Starting AI content generation", {
+      generationId,
+      format,
+      promptLength: prompt.length,
+    });
+
+    // Step 1: Validate and enhance the prompt
+    const enhancedPrompt = await step.run("enhance-prompt", async () => {
+      logger.info("Enhancing prompt", { generationId });
+
+      // Build the system prompt
+      const systemPrompt = prompts.contentGeneration
+        .replace("{prompt}", prompt)
+        .replace("{format}", format);
+
+      return {
+        systemPrompt,
+        userPrompt: prompt,
+        generationId,
+        timestamp: new Date().toISOString(),
+      };
+    });
+
+    // Step 2: Call the LLM
+    const generation = await step.run("generate-content", async () => {
+      logger.info("Generating content with LLM", {
+        generationId,
+        model: models.standard,
+      });
+
+      // Call OpenAI with retry handling
+      const response = await openai.chat.completions.create({
+        model: models.standard,
+        messages: [
+          { role: "system", content: enhancedPrompt.systemPrompt },
+          { role: "user", content: prompt },
+        ],
+        temperature: 0.7,
+        max_tokens: 2000,
+      });
+
+      const content = response.choices[0]?.message?.content;
+
+      if (!content) {
+        throw new Error("No content generated by LLM");
+      }
+
+      return {
+        content,
+        model: models.standard,
+        tokens: {
+          prompt: response.usage?.prompt_tokens || 0,
+          completion: response.usage?.completion_tokens || 0,
+          total: response.usage?.total_tokens || 0,
+        },
+        completionId: response.id,
+        generatedAt: new Date().toISOString(),
+      };
+    });
+
+    // Step 3: Analyze content quality
+    const analysis = await step.run("analyze-content", async () => {
+      logger.info("Analyzing content quality", { generationId });
+
+      // Count words and sentences
+      const words = generation.content.split(/\s+/).length;
+      const sentences = generation.content.split(/[.!?]+/).length - 1;
+
+      // Simple quality check
+      const quality = {
+        wordCount: words,
+        sentenceCount: sentences,
+        averageWordsPerSentence: words / sentences,
+        hasMarkdown: /[#*`]/g.test(generation.content),
+        hasList: /[•\-*]\s/g.test(generation.content) || /\d\.\s/g.test(generation.content),
+        readability: sentences > 5 ? "good" : "needs_improvement",
+        score: Math.min(100, (words / 50) * 20 + (sentences / 5) * 20),
+      };
+
+      return quality;
+    });
+
+    // Step 4: Store the content
+    const storage = await step.run("store-content", async () => {
+      logger.info("Storing generated content", {
+        generationId,
+        wordCount: analysis.wordCount,
+      });
+
+      // In a real app, store in database
+      return {
+        stored: true,
+        contentId: `content-${generationId}`,
+        url: `https://storage.workflowhub.com/content/${generationId}.md`,
+        storedAt: new Date().toISOString(),
+      };
+    });
+
+    // Step 5: Optionally, send for human review if quality is low
+    let reviewResult = null;
+    if (analysis.score < 60) {
+      const reviewRequest = await step.run("request-human-review", async () => {
+        logger.info("Content quality low, requesting human review", {
+          generationId,
+          score: analysis.score,
+        });
+
+        // In a real app, send to a review queue
+        return {
+          reviewId: `review-${generationId}`,
+          status: "pending",
+          requestedAt: new Date().toISOString(),
+        };
+      });
+
+      // Wait for review
+      try {
+        const reviewDecision = await step.waitForEvent("wait-for-review", {
+          event: "content/reviewed",
+          timeout: "24h",
+          match: (data) => data.generationId === generationId,
+        });
+
+        reviewResult = {
+          reviewed: true,
+          approved: reviewDecision.data.approved,
+          feedback: reviewDecision.data.feedback,
+          reviewedAt: reviewDecision.data.timestamp,
+        };
+      } catch {
+        // Timeout - auto-approve with warning
+        reviewResult = {
+          reviewed: false,
+          approved: true,
+          feedback: "Auto-approved after timeout",
+          reviewedAt: new Date().toISOString(),
+        };
+      }
+    }
+
+    // Step 6: Notify user
+    await step.run("notify-user", async () => {
+      logger.info("Notifying user of completion", {
+        generationId,
+        userId,
+        contentId: storage.contentId,
+      });
+
+      // In a real app, send email or notification
+      return {
+        notified: true,
+        notifiedAt: new Date().toISOString(),
+      };
+    });
+
+    // Return comprehensive result
+    return {
+      success: true,
+      generationId,
+      content: generation.content,
+      metadata: {
+        model: generation.model,
+        tokens: generation.tokens,
+        wordCount: analysis.wordCount,
+        qualityScore: analysis.score,
+        reviewed: reviewResult?.reviewed || false,
+        approved: reviewResult?.approved || true,
+      },
+      storage: {
+        contentId: storage.contentId,
+        url: storage.url,
+      },
+      completedAt: new Date().toISOString(),
+    };
+  }
+);
+```
+
+---
+
+## 4. Multi-Agent Orchestration
+
+### A. The Concept
+
+Multi-agent orchestration involves coordinating multiple AI agents to complete complex tasks. Each agent has a specific role and the workflow orchestrates their interactions.
+
+### B. Implementation: Document Processing Pipeline
+
+```typescript
+// src/inngest/functions/multi-agent-workflow.ts
+import { inngest } from "@/inngest/client";
+import { openai, models } from "@/lib/ai/client";
+
+export const multiAgentWorkflow = inngest.createFunction(
+  {
+    id: "multi-agent-workflow",
+    name: "Multi-Agent Document Processing",
+  },
+  { event: "document/process-requested" },
+  async ({ event, step, logger }) => {
+    const { documentId, content, documentType } = event.data;
+
+    logger.info("Starting multi-agent processing", { documentId, documentType });
+
+    // Agent 1: Summarizer
+    const summary = await step.run("summarize-document", async () => {
+      logger.info("Agent 1: Summarizing document", { documentId });
+
+      const response = await openai.chat.completions.create({
+        model: models.standard,
+        messages: [
+          {
+            role: "system",
+            content: `You are a professional summarizer. Create a concise summary of the following ${documentType} document. Focus on key points and main takeaways.`,
+          },
+          { role: "user", content },
+        ],
+        max_tokens: 500,
+      });
+
+      return {
+        summary: response.choices[0].message.content,
+        tokens: response.usage?.total_tokens || 0,
+      };
+    });
+
+    // Agent 2: Extractor (extract key entities)
+    const entities = await step.run("extract-entities", async () => {
+      logger.info("Agent 2: Extracting entities", { documentId });
+
+      const response = await openai.chat.completions.create({
+        model: models.fast,
+        messages: [
+          {
+            role: "system",
+            content: `Extract key entities from this ${documentType} document. Provide as JSON with categories: people, organizations, locations, dates, topics.`,
+          },
+          { role: "user", content },
+        ],
+        response_format: { type: "json_object" },
+      });
+
+      try {
+        return JSON.parse(response.choices[0].message.content);
+      } catch {
+        return { entities: [], error: "Failed to parse entities" };
+      }
+    });
+
+    // Agent 3: Sentiment Analyzer
+    const sentiment = await step.run("analyze-sentiment", async () => {
+      logger.info("Agent 3: Analyzing sentiment", { documentId });
+
+      const response = await openai.chat.completions.create({
+        model: models.fast,
+        messages: [
+          {
+            role: "system",
+            content: `Analyze the sentiment of this ${documentType} document. Provide: overall sentiment (positive/negative/neutral), confidence score (0-1), and key emotional indicators.`,
+          },
+          { role: "user", content },
+        ],
+        max_tokens: 300,
+      });
+
+      return {
+        sentiment: response.choices[0].message.content,
+        tokens: response.usage?.total_tokens || 0,
+      };
+    });
+
+    // Agent 4: Action Recommender
+    const actions = await step.run("recommend-actions", async () => {
+      logger.info("Agent 4: Recommending actions", { documentId });
+
+      const response = await openai.chat.completions.create({
+        model: models.standard,
+        messages: [
+          {
+            role: "system",
+            content: `Based on this ${documentType} document, recommend next actions. Consider: any urgent matters, follow-up items, tasks to assign, or decisions to make.`,
+          },
+          { role: "user", content },
+        ],
+        max_tokens: 400,
+      });
+
+      return {
+        actions: response.choices[0].message.content,
+        tokens: response.usage?.total_tokens || 0,
+      };
+    });
+
+    // Step 5: Aggregate all agent outputs
+    const aggregation = await step.run("aggregate-results", async () => {
+      logger.info("Aggregating multi-agent results", { documentId });
+
+      return {
+        documentId,
+        documentType,
+        processedAt: new Date().toISOString(),
+        summary: summary.summary,
+        entities,
+        sentiment: sentiment.sentiment,
+        actions: actions.actions,
+        totalTokens: summary.tokens + entities.tokens + sentiment.tokens + actions.tokens,
+        agentCount: 4,
+      };
+    });
+
+    return aggregation;
+  }
+);
+```
+
+---
+
+## 5. Retrieval-Augmented Generation (RAG)
+
+### A. The Concept
+
+RAG workflows combine retrieval of relevant information with LLM generation. This enables AI to answer questions based on specific documents or data.
+
+### B. Implementation: RAG Workflow
+
+```typescript
+// src/inngest/functions/rag-workflow.ts
+import { inngest } from "@/inngest/client";
+import { openai, models } from "@/lib/ai/client";
+
+// Simulated vector database
+class VectorDB {
+  async search(query: string, limit: number = 5) {
+    // In a real app, use Pinecone, Weaviate, etc.
+    return [
+      {
+        id: "doc-1",
+        content: "Durable execution ensures workflows survive failures.",
+        similarity: 0.95,
+      },
+      {
+        id: "doc-2",
+        content: "Inngest provides durable execution for JavaScript workflows.",
+        similarity: 0.89,
+      },
+      {
+        id: "doc-3",
+        content: "Serverless functions can be orchestrated with durable execution.",
+        similarity: 0.82,
+      },
+    ];
+  }
+}
+
+const vectorDB = new VectorDB();
+
+export const ragWorkflow = inngest.createFunction(
+  {
+    id: "rag-workflow",
+    name: "RAG Query Workflow",
+  },
+  { event: "rag/query" },
+  async ({ event, step, logger }) => {
+    const { queryId, query, userId, collection } = event.data;
+
+    logger.info("Processing RAG query", { queryId, query });
+
+    // Step 1: Retrieve relevant documents
+    const documents = await step.run("retrieve-documents", async () => {
+      logger.info("Retrieving documents from vector DB", { query, collection });
+
+      // Search vector database
+      const results = await vectorDB.search(query, 5);
+
+      return results.map(doc => ({
+        id: doc.id,
+        content: doc.content,
+        relevance: doc.similarity,
+      }));
+    });
+
+    // Step 2: Augment prompt with retrieved documents
+    const augmentedPrompt = await step.run("augment-prompt", async () => {
+      logger.info("Building augmented prompt", { 
+        queryId, 
+        documentCount: documents.length 
+      });
+
+      // Build context from documents
+      const context = documents
+        .map((doc, i) => `[Document ${i + 1}] ${doc.content}`)
+        .join("\n\n");
+
+      const augmentedPrompt = `
+        You are a helpful assistant. Use the following context to answer the user's question.
+        If you cannot answer based on the context, say so clearly.
+
+        Context:
+        ${context}
+
+        Question: ${query}
+
+        Answer:
+      `;
+
+      return {
+        prompt: augmentedPrompt,
+        context,
+        documentIds: documents.map(d => d.id),
+      };
+    });
+
+    // Step 3: Generate response
+    const response = await step.run("generate-response", async () => {
+      logger.info("Generating RAG response", { queryId });
+
+      const completion = await openai.chat.completions.create({
+        model: models.standard,
+        messages: [
+          { role: "user", content: augmentedPrompt.prompt },
+        ],
+        temperature: 0.3,
+        max_tokens: 1000,
+      });
+
+      return {
+        answer: completion.choices[0].message.content,
+        tokens: completion.usage?.total_tokens || 0,
+        model: models.standard,
+      };
+    });
+
+    // Step 4: Evaluate response quality
+    const evaluation = await step.run("evaluate-response", async () => {
+      logger.info("Evaluating response quality", { queryId });
+
+      // Simple evaluation using another LLM
+      const evaluationPrompt = `
+        Evaluate this Q&A response for quality.
+        Score from 1-10 on: accuracy, completeness, clarity, helpfulness.
+
+        Question: ${query}
+
+        Answer: ${response.answer}
+
+        Provide evaluation as JSON with scores and brief feedback.
+      `;
+
+      const evalResponse = await openai.chat.completions.create({
+        model: models.fast,
+        messages: [{ role: "user", content: evaluationPrompt }],
+        response_format: { type: "json_object" },
+      });
+
+      try {
+        return JSON.parse(evalResponse.choices[0].message.content);
+      } catch {
+        return {
+          scores: {
+            accuracy: 7,
+            completeness: 7,
+            clarity: 7,
+            helpfulness: 7,
+          },
+          feedback: "Evaluation failed, using default scores.",
+        };
+      }
+    });
+
+    // Step 5: Store conversation history
+    const history = await step.run("store-conversation", async () => {
+      logger.info("Storing conversation history", { queryId });
+
+      // In a real app, store in database
+      return {
+        stored: true,
+        conversationId: `conv-${queryId}`,
+        storedAt: new Date().toISOString(),
+      };
+    });
+
+    return {
+      success: true,
+      queryId,
+      query,
+      answer: response.answer,
+      sources: augmentedPrompt.documentIds,
+      evaluation,
+      tokens: response.tokens,
+      processedAt: new Date().toISOString(),
+    };
+  }
+);
+```
+
+---
+
+## 6. Human Review Loop for AI Outputs
+
+### A. The Concept
+
+Many AI applications require human review of outputs before they're used. This is especially important for sensitive content, financial decisions, or medical information.
+
+### B. Implementation: AI Review Workflow
+
+```typescript
+// src/inngest/functions/ai-review-workflow.ts
+import { inngest } from "@/inngest/client";
+
+export const aiReviewWorkflow = inngest.createFunction(
+  {
+    id: "ai-review-workflow",
+    name: "AI Review Workflow",
+  },
+  { event: "ai/review-requested" },
+  async ({ event, step, logger }) => {
+    const { reviewId, content, type, requesterId, urgency } = event.data;
+
+    logger.info("Starting AI review workflow", { reviewId, type });
+
+    // Step 1: Assign to reviewer
+    const assignment = await step.run("assign-reviewer", async () => {
+      logger.info("Assigning reviewer", { reviewId });
+
+      // In a real app, assign based on expertise, availability, etc.
+      return {
+        reviewerId: `reviewer-${Math.floor(Math.random() * 100)}`,
+        reviewerName: "Review Team",
+        assignedAt: new Date().toISOString(),
+      };
+    });
+
+    // Step 2: Notify reviewer
+    await step.run("notify-reviewer", async () => {
+      logger.info("Notifying reviewer", { 
+        reviewId, 
+        reviewerId: assignment.reviewerId 
+      });
+
+      // In a real app, send email or notification
+      return {
+        notified: true,
+        notifiedAt: new Date().toISOString(),
+      };
+    });
+
+    // Step 3: Wait for review decision
+    let reviewResult;
+    let timeoutOccurred = false;
+
+    try {
+      const timeoutDuration = urgency === "critical" ? "4h" : "24h";
+
+      reviewResult = await step.waitForEvent("wait-for-review", {
+        event: "review/decision-made",
+        timeout: timeoutDuration,
+        match: (data) => data.reviewId === reviewId,
+      });
+
+    } catch {
+      // Timeout - escalate or auto-approve based on policy
+      timeoutOccurred = true;
+      logger.warn("Review timed out, escalating", { reviewId, urgency });
+    }
+
+    // Step 4: Process review decision
+    if (timeoutOccurred) {
+      // Escalate based on urgency
+      if (urgency === "critical") {
+        // Auto-approve critical items
+        await step.run("auto-approve", async () => {
+          logger.info("Auto-approving critical review", { reviewId });
+          return { approved: true, reason: "Auto-approved due to urgency" };
+        });
+
+        return {
+          reviewId,
+          status: "approved",
+          approvedAt: new Date().toISOString(),
+          autoApproved: true,
+        };
+      } else {
+        // Escalate to manager
+        const escalation = await step.run("escalate-review", async () => {
+          logger.info("Escalating review", { reviewId });
+          // In a real app, notify manager
+          return {
+            escalated: true,
+            escalatedTo: "manager@workflowhub.com",
+            escalatedAt: new Date().toISOString(),
+          };
+        });
+
+        // Wait for escalation decision
+        try {
+          const escalationDecision = await step.waitForEvent("wait-for-escalation", {
+            event: "review/escalation-decision",
+            timeout: "12h",
+            match: (data) => data.reviewId === reviewId,
+          });
+
+          return {
+            reviewId,
+            status: escalationDecision.data.approved ? "approved" : "denied",
+            reviewedBy: "manager",
+            reviewedAt: escalationDecision.data.timestamp,
+            escalation,
+          };
+        } catch {
+          // Escalation timeout - default to deny
+          return {
+            reviewId,
+            status: "denied",
+            reason: "Escalation timed out",
+            deniedAt: new Date().toISOString(),
+            escalation,
+          };
+        }
+      }
+    }
+
+    // Step 5: Normal review completed
+    const finalDecision = await step.run("finalize-review", async () => {
+      logger.info("Finalizing review", { 
+        reviewId, 
+        approved: reviewResult.data.approved 
+      });
+
+      // If approved, publish the content
+      if (reviewResult.data.approved) {
+        await publishContent(reviewId, content);
+      }
+
+      return {
+        approved: reviewResult.data.approved,
+        feedback: reviewResult.data.feedback,
+        reviewer: reviewResult.data.reviewer,
+        finalizedAt: new Date().toISOString(),
+      };
+    });
+
+    return {
+      reviewId,
+      status: finalDecision.approved ? "approved" : "denied",
+      feedback: finalDecision.feedback,
+      reviewer: finalDecision.reviewer,
+      processedAt: finalDecision.finalizedAt,
+    };
+  }
+);
+
+// Helper function
+async function publishContent(reviewId: string, content: any) {
+  // In a real app, publish to production
+  console.log(`Publishing content from review ${reviewId}`);
+}
+```
+
+---
+
+## 7. Enterprise Patterns
+
+### A. Multi-Tenant AI Workflows
+
+When building AI workflows for multiple tenants, ensure isolation and fair resource allocation:
+
+```typescript
+export const tenantAIWorkflow = inngest.createFunction(
+  {
+    id: "tenant-ai-workflow",
+    name: "Tenant AI Workflow",
+    concurrency: {
+      limit: 10,
+      scope: "key",
+      key: "data.tenantId", // Each tenant gets their own concurrency limit
+    },
+    rateLimit: {
+      limit: 100,
+      period: "1m",
+      key: "data.tenantId",
+    },
+  },
+  { event: "tenant/ai-request" },
+  async ({ event, step, logger }) => {
+    const { tenantId, requestId, prompt } = event.data;
+
+    // Check tenant quota
+    const quota = await step.run("check-quota", async () => {
+      // In a real app, check usage against tenant's plan
+      return {
+        allowed: true,
+        remaining: 950,
+        limit: 1000,
+        period: "monthly",
+      };
+    });
+
+    if (!quota.allowed) {
+      return {
+        success: false,
+        error: "Quota exceeded for this tenant",
+        quota,
+      };
+    }
+
+    // Process AI request with tenant isolation
+    const result = await step.run("process-ai-request", async () => {
+      // Use tenant-specific model if configured
+      const response = await openai.chat.completions.create({
+        model: models.standard,
+        messages: [
+          { role: "system", content: `You are serving tenant: ${tenantId}` },
+          { role: "user", content: prompt },
+        ],
+      });
+
+      return {
+        content: response.choices[0].message.content,
+        tokens: response.usage?.total_tokens || 0,
+      };
+    });
+
+    // Update tenant usage
+    await step.run("update-usage", async () => {
+      // In a real app, increment usage counter
+      return { updated: true };
+    });
+
+    return {
+      success: true,
+      tenantId,
+      requestId,
+      result: result.content,
+      tokens: result.tokens,
+      quotaRemaining: quota.remaining - 1,
+    };
+  }
+);
+```
+
+### B. Batch AI Processing
+
+For large-scale AI processing with rate limits:
+
+```typescript
+export const batchAIWorkflow = inngest.createFunction(
+  {
+    id: "batch-ai-workflow",
+    name: "Batch AI Processing",
+    concurrency: {
+      limit: 5, // Only 5 batches at a time
+    },
+  },
+  { event: "batch/ai-request" },
+  async ({ event, step, logger }) => {
+    const { batchId, items, model, maxConcurrent = 10 } = event.data;
+
+    logger.info("Starting batch AI processing", { 
+      batchId, 
+      itemCount: items.length,
+      maxConcurrent,
+    });
+
+    // Process items in chunks to respect rate limits
+    const results = [];
+    const BATCH_SIZE = Math.min(maxConcurrent, items.length);
+
+    for (let i = 0; i < items.length; i += BATCH_SIZE) {
+      const chunk = items.slice(i, i + BATCH_SIZE);
+
+      const chunkResults = await step.run(`process-chunk-${i}`, async () => {
+        // Process chunk in parallel
+        const promises = chunk.map(async (item: any, index: number) => {
+          try {
+            const response = await openai.chat.completions.create({
+              model,
+              messages: [
+                { role: "system", content: "Process this item." },
+                { role: "user", content: item.prompt },
+              ],
+            });
+
+            return {
+              itemId: item.id,
+              success: true,
+              result: response.choices[0].message.content,
+              tokens: response.usage?.total_tokens || 0,
+            };
+          } catch (error) {
+            return {
+              itemId: item.id,
+              success: false,
+              error: error.message,
+            };
+          }
+        });
+
+        return await Promise.all(promises);
+      });
+
+      results.push(...chunkResults);
+
+      // Rate limiting delay between chunks
+      if (i + BATCH_SIZE < items.length) {
+        await step.sleep("rate-limit-delay", 1000);
+      }
+    }
+
+    // Aggregate results
+    const summary = {
+      batchId,
+      totalItems: items.length,
+      successful: results.filter(r => r.success).length,
+      failed: results.filter(r => !r.success).length,
+      results,
+      completedAt: new Date().toISOString(),
+    };
+
+    return summary;
+  }
+);
+```
+
+---
+
+## 8. Summary: AI Workflows & Enterprise Patterns
+
+| Pattern | Use Case | Key Features |
+|---------|----------|--------------|
+| **AI Content Generation** | Generate content with LLMs | Durable, retry, rate limiting |
+| **Multi-Agent Orchestration** | Complex tasks with multiple agents | Specialized agents, aggregation |
+| **RAG Workflows** | Answer questions from documents | Retrieval, augmentation, generation |
+| **Human Review Loop** | Validate AI outputs | Review assignment, escalation, auto-approve |
+| **Multi-Tenant AI** | AI for multiple tenants | Isolation, quota management |
+| **Batch AI Processing** | Scale AI operations | Chunking, rate limiting, parallel processing |
+
+---
+
+## Next Steps
+
+You now have a complete understanding of building AI workflows with Inngest. The primitives you've learned—durable steps, event waiting, concurrency control—apply to any AI use case.
+
+**Where to go from here:**
+- Build your own AI agents
+- Experiment with different LLM providers
+- Add more sophisticated evaluation and feedback loops
+- Explore vector databases for RAG at scale
+- Implement fine-tuning workflows
