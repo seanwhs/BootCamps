@@ -3,7 +3,7 @@
 
 ---
 
-### About This Appendix
+### About This Guide
 
 This appendix provides a comprehensive list of references, resources, and recommended reading for the "Master Business Analysis: From Strategy to Execution" series. It is organized by category to support ongoing learning, certification preparation, and professional development.
 
