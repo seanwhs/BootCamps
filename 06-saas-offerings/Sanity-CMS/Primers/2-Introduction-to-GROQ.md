@@ -1,4 +1,4 @@
-# Primer 4: Introduction to GROQ
+# Primer 2: Introduction to GROQ
 
 Welcome to the fourth primer. Now that you have content in your Studio, it's time to learn how to get it out. This primer focuses exclusively on GROQ (Graph-Relational Object Queries), Sanity's powerful query language.
 
