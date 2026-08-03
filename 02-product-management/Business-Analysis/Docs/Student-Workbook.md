@@ -1,4 +1,4 @@
-# Appendix G: Student Workbook
+# Student Workbook
 ## Master Business Analysis: From Strategy to Execution
 
 ---
