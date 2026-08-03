@@ -1,4 +1,4 @@
-# Primer 3: The Production Readiness Checklist
+# Primer 4: The Production Readiness Checklist
 
 ## Deploying Clerk-Powered Applications to Production
 
