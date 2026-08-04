@@ -2,8 +2,6 @@
 
 ## Section 1: Understanding Zustand
 
-[STARTING: Part 1, Section 1: Understanding Zustand]
-
 Before we write a single line of code, we need to understand what Zustand is, why it exists, and how it works under the hood. This foundational knowledge will make everything else click into place.
 
 ### The Problem Zustand Solves
