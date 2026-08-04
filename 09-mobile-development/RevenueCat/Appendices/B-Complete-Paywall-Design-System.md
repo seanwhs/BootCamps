@@ -601,7 +601,3 @@ This design system provides a comprehensive reference for building conversion-op
 5. **Track What Matters**: Measure and iterate based on data
 
 Remember: a paywall is a sales page, not a feature list. Every element should be designed to convert users into subscribers.
-
----
-
-*This appendix is part of the "Master RevenueCat: In-App Subscriptions & Monetization" tutorial series.*
