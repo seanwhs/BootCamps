@@ -2,8 +2,6 @@
 
 ## Section 2: Creating Your First Store
 
-[STARTING: Part 1, Section 2: Creating Your First Store]
-
 Now that you understand Zustand's philosophy and architecture, it's time to get your hands dirty. In this section, you'll create your first store from scratch and connect it to a React component.
 
 ---
