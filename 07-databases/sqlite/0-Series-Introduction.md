@@ -137,12 +137,6 @@ All tools are free, open‑source, and cross‑platform.
 
 After this Introduction, we will move directly into **Part 1: SQLite Foundations & Internal Architecture**. There, we will start by installing SQLite, creating our first database, and exploring its unique architecture.
 
-But before we do, let’s log our progress:
-
-**[GENERATED: Part 0: Introduction]**
-
----
-
 ## Ready?
 
 You are about to embark on a journey that will transform the way you think about data storage. SQLite is deceptively simple, yet it holds deep engineering secrets that power some of the most demanding applications on the planet. By the end of this series, you will not only be able to use SQLite effectively—you will understand how it works under the hood, how to squeeze every ounce of performance out of it, and how to deploy it safely in production.
