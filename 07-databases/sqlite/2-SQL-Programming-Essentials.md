@@ -789,12 +789,6 @@ Run each query and verify output against your data.
 | `PARTITION BY` | Divide rows into groups |
 | `ORDER BY` within `OVER` | Ordering for window |
 
----
-
-**[GENERATED: Part 2, Module 8: Aggregation & Reporting]**
-
----
-
 ## End of Part 2
 
 You have now completed Part 2 of the series. You have learned:
