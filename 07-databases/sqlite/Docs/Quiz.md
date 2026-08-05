@@ -862,10 +862,4 @@ CREATE TABLE post_tags (
 
 ---
 
-## Answer Keys Summary
-
-All answers are provided immediately after each question in the sections above.
-
----
-
 This test bank is designed to be modular; instructors can pick questions per module or use the comprehensive final exam. The variety of formats assesses both theoretical understanding and practical coding skills.
