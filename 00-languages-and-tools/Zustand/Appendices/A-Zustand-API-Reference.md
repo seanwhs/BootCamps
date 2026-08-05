@@ -713,7 +713,3 @@ const mockStore = create<Store>((set) => ({
 | **Patterns** | Factory, DI, cross-store communication, lazy init |
 | **Performance** | Memoized selectors, shallow equality, selective subscriptions |
 | **Testing** | Store reset, mocks, utilities |
-
----
-
-[GENERATED: Appendix A — Zustand API Reference]
