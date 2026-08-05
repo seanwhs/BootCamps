@@ -835,12 +835,6 @@ PRAGMA integrity_check;
 
 Expected output of `PRAGMA integrity_check;` is `ok`. This verifies that all constraints and data are consistent.
 
----
-
-**[GENERATED: Part 1, Module 4: Creating and Managing Tables]**
-
----
-
 ## End of Part 1
 
 You have now completed the first major part of the series. You have:
