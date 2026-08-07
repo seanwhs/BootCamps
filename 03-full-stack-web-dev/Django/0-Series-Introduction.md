@@ -1,8 +1,6 @@
 # Part 0: Introduction — Your Journey from Zero to Production-Ready Django
 
-## Welcome to Mastering Django 6
-
-Hello, future Django developer! 
+## Welcome, Future Django Developer!
 
 Before we write a single line of code, I want to set expectations, introduce the philosophy behind this series, and give you a clear roadmap of everything you're about to build. This introduction is designed to be your North Star — whenever you feel lost during the upcoming 10-part journey, come back to this document to remind yourself why you started and where you're going.
 
@@ -42,8 +40,6 @@ In modern web development, there's a pervasive trend toward complexity. Many tut
 - And about a dozen other tools just to render HTML
 
 **We reject that complexity for this series.**
-
-![Architecture Philosophy](placeholder-for-architecture-diagram)
 
 Our architecture is deliberately simple:
 
@@ -169,8 +165,6 @@ A summary of what you've built and how it fits into the larger application.
 ## Our Learning Philosophy
 
 This series is built on a proven learning framework: **Build → Understand → Refactor → Test → Deploy**
-
-![Learning Cycle](placeholder-for-learning-cycle-diagram)
 
 ### Build First
 
