@@ -4,7 +4,7 @@
 
 You've built a fully functional CRUD application with user authentication. But as your application grows, you might notice that your views are becoming repetitive. In this part, we'll:
 
-1. **Refactor** our function-based views to **class-based views** (CBVs) — making our code more reusable and organized
+1. **Refactor** our function-based views to **class-based views (CBVs)** — making our code more reusable and organized
 2. **Add search** functionality so users can find posts by title or content
 3. **Implement filtering** by category, author, status, and date
 4. **Add pagination** to handle large numbers of posts
@@ -58,18 +58,6 @@ View
 | **Built-in Features** | Minimal | Many (pagination, etc.) |
 | **Best For** | Simple views | Complex, repetitive views |
 
-### When to Use Each
-
-**Use Function-Based Views when:**
-- The view is very simple
-- You're new to Django
-- You need very specific custom behavior
-
-**Use Class-Based Views when:**
-- You have repetitive CRUD operations
-- You need built-in features (pagination, form handling)
-- You want clean, maintainable code
-
 ---
 
 ## Target 4.2: Refactoring Blog List to Class-Based
@@ -80,21 +68,27 @@ We'll start by refactoring our `blog_list` view to a `ListView`. This is one of 
 
 ### The Implementation
 
-**File: `blog/views.py`** (replace blog_list with class-based view)
+**File: `blog/views.py`** - Add necessary imports and new class-based views
 
-First, let's add the necessary imports at the top:
+First, let's add the necessary imports at the top of `views.py`:
 
 ```python
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.contrib import messages
+from django.utils import timezone
 
-# ... keep your existing imports ...
+# Keep all your existing imports and function-based views
+# We'll add the class-based views below
+```
 
-# Now replace the blog_list function with:
+Now add the `PostListView` class:
 
+**File: `blog/views.py`** (add after existing imports)
+
+```python
 class PostListView(ListView):
     """
     Class-based view for displaying a list of blog posts.
@@ -108,7 +102,7 @@ class PostListView(ListView):
     """
     model = Post
     template_name = 'blog/blog_list.html'
-    context_object_name = 'posts'  # Name used in the template
+    context_object_name = 'posts'
     paginate_by = 10  # Number of posts per page
     ordering = ['-published_at']  # Default ordering
     
@@ -156,22 +150,18 @@ class PostListView(ListView):
         
         # Sorting
         if sort_by:
-            if sort_by == 'title':
-                queryset = queryset.order_by('title')
-            elif sort_by == '-title':
-                queryset = queryset.order_by('-title')
-            elif sort_by == 'created_at':
-                queryset = queryset.order_by('created_at')
-            elif sort_by == '-created_at':
-                queryset = queryset.order_by('-created_at')
-            elif sort_by == 'published_at':
-                queryset = queryset.order_by('published_at')
-            elif sort_by == '-published_at':
-                queryset = queryset.order_by('-published_at')
-            elif sort_by == 'author':
-                queryset = queryset.order_by('author__username')
-            elif sort_by == '-author':
-                queryset = queryset.order_by('-author__username')
+            sort_mapping = {
+                'title': 'title',
+                '-title': '-title',
+                'created_at': 'created_at',
+                '-created_at': '-created_at',
+                'published_at': 'published_at',
+                '-published_at': '-published_at',
+                'author': 'author__username',
+                '-author': '-author__username',
+            }
+            if sort_by in sort_mapping:
+                queryset = queryset.order_by(sort_mapping[sort_by])
         
         return queryset
     
@@ -210,9 +200,323 @@ class PostListView(ListView):
         return context
 ```
 
-Now let's update the blog_list template to work with the class-based view:
+---
 
-**File: `blog/templates/blog/blog_list.html`** (updated for pagination)
+## Target 4.3: Refactoring Post Detail to Class-Based
+
+### The Concept
+
+Next, we'll refactor `post_detail` to a `DetailView`. This is even simpler than ListView.
+
+### The Implementation
+
+**File: `blog/views.py`** (add after PostListView)
+
+```python
+class PostDetailView(DetailView):
+    """
+    Class-based view for displaying a single blog post.
+    
+    This view handles:
+    - Displaying the post content
+    - Showing related posts
+    - Displaying comments
+    """
+    model = Post
+    template_name = 'blog/post_detail.html'
+    context_object_name = 'post'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+    
+    def get_queryset(self):
+        """
+        Only show published posts (or drafts for authors).
+        """
+        queryset = super().get_queryset()
+        
+        # If user is authenticated, allow them to see their own drafts
+        if self.request.user.is_authenticated:
+            return queryset.filter(
+                Q(status=Post.Status.PUBLISHED) |
+                Q(author=self.request.user)
+            )
+        else:
+            return queryset.filter(status=Post.Status.PUBLISHED)
+    
+    def get_context_data(self, **kwargs):
+        """
+        Add extra context: recent posts and comments.
+        """
+        context = super().get_context_data(**kwargs)
+        post = self.get_object()
+        
+        # Get recent posts (excluding current)
+        recent_posts = Post.objects.filter(
+            status=Post.Status.PUBLISHED
+        ).exclude(id=post.id).order_by('-published_at')[:5]
+        
+        # Get approved comments
+        comments = post.comments.filter(is_approved=True).order_by('created_at')
+        
+        # Add to context
+        context['recent_posts'] = recent_posts
+        context['comments'] = comments
+        context['year'] = timezone.now().year
+        
+        return context
+```
+
+---
+
+## Target 4.4: Refactoring CRUD Views to Class-Based
+
+### The Concept
+
+Now we'll refactor our CRUD views to use Django's generic editing views. These views handle forms, validation, and saving automatically.
+
+### The Implementation
+
+**File: `blog/views.py`** (add after PostDetailView)
+
+```python
+class PostCreateView(LoginRequiredMixin, CreateView):
+    """
+    Class-based view for creating new blog posts.
+    
+    LoginRequiredMixin ensures only authenticated users can access.
+    """
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Create New Post'
+        context['submit_text'] = 'Create Post'
+        context['year'] = timezone.now().year
+        return context
+    
+    def form_valid(self, form):
+        """
+        Set the author to the current user before saving.
+        """
+        form.instance.author = self.request.user
+        
+        # If status is published, set published_at
+        if form.instance.status == Post.Status.PUBLISHED:
+            form.instance.published_at = timezone.now()
+        
+        # Save the form
+        response = super().form_valid(form)
+        
+        # Show success message
+        messages.success(self.request, f'Your post "{form.instance.title}" has been created successfully!')
+        
+        return response
+    
+    def get_success_url(self):
+        """
+        Redirect to the post detail page after successful creation.
+        """
+        return reverse_lazy('blog:post_detail', kwargs={'slug': self.object.slug})
+
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """
+    Class-based view for editing blog posts.
+    
+    UserPassesTestMixin ensures the user is the author of the post.
+    """
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_form.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Edit Post: {self.object.title}'
+        context['submit_text'] = 'Update Post'
+        context['year'] = timezone.now().year
+        
+        # Pre-populate tags_input
+        if self.object.tags.exists():
+            tags_list = [tag.name for tag in self.object.tags.all()]
+            context['form'].fields['tags_input'].initial = ', '.join(tags_list)
+        
+        return context
+    
+    def form_valid(self, form):
+        """
+        Handle status changes and save.
+        """
+        # Check if status changed to published
+        old_status = self.get_object().status
+        new_status = form.instance.status
+        
+        if new_status == Post.Status.PUBLISHED and old_status != Post.Status.PUBLISHED:
+            form.instance.published_at = timezone.now()
+        
+        # Save the form
+        response = super().form_valid(form)
+        
+        # Show success message
+        messages.success(self.request, f'Your post "{form.instance.title}" has been updated!')
+        
+        return response
+    
+    def test_func(self):
+        """
+        Check that the current user is the author of the post.
+        """
+        post = self.get_object()
+        return self.request.user == post.author
+    
+    def get_success_url(self):
+        return reverse_lazy('blog:post_detail', kwargs={'slug': self.object.slug})
+
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """
+    Class-based view for deleting blog posts.
+    """
+    model = Post
+    template_name = 'blog/post_confirm_delete.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+    success_url = reverse_lazy('blog:blog_list')
+    
+    def test_func(self):
+        """
+        Check that the current user is the author of the post.
+        """
+        post = self.get_object()
+        return self.request.user == post.author
+    
+    def delete(self, request, *args, **kwargs):
+        """
+        Override delete to add a success message.
+        """
+        post = self.get_object()
+        post_title = post.title
+        response = super().delete(request, *args, **kwargs)
+        messages.success(request, f'Your post "{post_title}" has been deleted.')
+        return response
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['year'] = timezone.now().year
+        return context
+```
+
+---
+
+## Target 4.5: Refactoring Home Page to Class-Based
+
+### The Concept
+
+Even the home page can benefit from a class-based approach.
+
+### The Implementation
+
+**File: `blog/views.py`** (add after PostDeleteView)
+
+```python
+class HomeView(TemplateView):
+    """
+    Class-based view for the homepage.
+    """
+    template_name = 'blog/home.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Get recent posts
+        recent_posts = Post.objects.filter(
+            status=Post.Status.PUBLISHED,
+            published_at__lte=timezone.now()
+        ).order_by('-published_at')[:5]
+        
+        # Get categories with post counts
+        categories = Category.objects.annotate(
+            post_count=Count('posts', filter=Q(posts__status=Post.Status.PUBLISHED))
+        ).filter(post_count__gt=0)
+        
+        context['recent_posts'] = recent_posts
+        context['categories'] = categories
+        context['year'] = timezone.now().year
+        
+        return context
+```
+
+---
+
+## Target 4.6: Updating URLs to Use Class-Based Views
+
+### The Concept
+
+We need to update our URL patterns to use the new class-based views.
+
+### The Implementation
+
+**File: `blog/urls.py`** (update)
+
+```python
+from django.urls import path
+from django.contrib.auth import views as auth_views
+from . import views
+
+app_name = 'blog'
+
+urlpatterns = [
+    # Public views (class-based)
+    path('', views.HomeView.as_view(), name='home'),
+    path('about/', views.about, name='about'),  # Keep function-based for simplicity
+    path('blog/', views.PostListView.as_view(), name='blog_list'),
+    path('blog/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('category/<slug:slug>/', views.category_detail, name='category_detail'),
+    path('tag/<slug:slug>/', views.tag_detail, name='tag_detail'),
+    
+    # CRUD views (class-based)
+    path('post/create/', views.PostCreateView.as_view(), name='post_create'),
+    path('post/<slug:slug>/edit/', views.PostUpdateView.as_view(), name='post_edit'),
+    path('post/<slug:slug>/delete/', views.PostDeleteView.as_view(), name='post_delete'),
+    
+    # Comment views (function-based)
+    path('post/<slug:post_slug>/comment/', views.comment_create, name='comment_create'),
+    
+    # Authentication views
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('register/', views.register, name='register'),
+    
+    # Password management
+    path('password-reset/', 
+         auth_views.PasswordResetView.as_view(), 
+         name='password_reset'),
+    path('password-reset/done/', 
+         auth_views.PasswordResetDoneView.as_view(), 
+         name='password_reset_done'),
+    path('password-reset/<uidb64>/<token>/', 
+         auth_views.PasswordResetConfirmView.as_view(), 
+         name='password_reset_confirm'),
+    path('password-reset/complete/', 
+         auth_views.PasswordResetCompleteView.as_view(), 
+         name='password_reset_complete'),
+]
+```
+
+---
+
+## Target 4.7: Updating Templates for Search and Pagination
+
+### The Concept
+
+We need to update our templates to support search, filtering, sorting, and pagination.
+
+### The Implementation
+
+**File: `blog/templates/blog/blog_list.html`** (update)
 
 ```html
 {% extends 'blog/base.html' %}
@@ -373,449 +677,7 @@ Now let's update the blog_list template to work with the class-based view:
 
 ---
 
-## Target 4.3: Refactoring Post Detail to Class-Based
-
-### The Concept
-
-Next, we'll refactor `post_detail` to a `DetailView`. This is even simpler than ListView.
-
-### The Implementation
-
-**File: `blog/views.py`** (replace post_detail with class-based view)
-
-```python
-class PostDetailView(DetailView):
-    """
-    Class-based view for displaying a single blog post.
-    
-    This view handles:
-    - Displaying the post content
-    - Showing related posts
-    - Displaying comments
-    """
-    model = Post
-    template_name = 'blog/post_detail.html'
-    context_object_name = 'post'
-    slug_field = 'slug'
-    slug_url_kwarg = 'slug'
-    
-    def get_queryset(self):
-        """
-        Only show published posts (or drafts for authors).
-        """
-        queryset = super().get_queryset()
-        
-        # If user is authenticated, allow them to see their own drafts
-        if self.request.user.is_authenticated:
-            return queryset.filter(
-                Q(status=Post.Status.PUBLISHED) |
-                Q(author=self.request.user)
-            )
-        else:
-            return queryset.filter(status=Post.Status.PUBLISHED)
-    
-    def get_context_data(self, **kwargs):
-        """
-        Add extra context: recent posts and comments.
-        """
-        context = super().get_context_data(**kwargs)
-        post = self.get_object()
-        
-        # Get recent posts (excluding current)
-        recent_posts = Post.objects.filter(
-            status=Post.Status.PUBLISHED
-        ).exclude(id=post.id).order_by('-published_at')[:5]
-        
-        # Get approved comments
-        comments = post.comments.filter(is_approved=True).order_by('created_at')
-        
-        # Add to context
-        context['recent_posts'] = recent_posts
-        context['comments'] = comments
-        context['year'] = timezone.now().year
-        
-        return context
-```
-
-Now let's update the post_detail template:
-
-**File: `blog/templates/blog/post_detail.html`** (updated for class-based view)
-
-```html
-{% extends 'blog/base.html' %}
-{% load static %}
-
-{% block title %}
-    {{ post.title }} — Django Blog
-{% endblock %}
-
-{% block content %}
-<div class="page-header">
-    <h1>{{ post.title }}</h1>
-    <p class="subtitle">
-        By {{ post.author.get_full_name|default:post.author.username }}
-        on {{ post.published_at|date:"F j, Y" }}
-        {% if post.category %}
-            in <a href="{{ post.category.get_absolute_url }}" style="color: #3498db; text-decoration: none;">
-                {{ post.category.name }}
-            </a>
-        {% endif %}
-    </p>
-    {% if post.tags.all %}
-        <p>
-            Tags:
-            {% for tag in post.tags.all %}
-                <a href="{{ tag.get_absolute_url }}" style="background: #ecf0f1; padding: 0.2rem 0.6rem; border-radius: 12px; color: #2c3e50; text-decoration: none; font-size: 0.85rem;">
-                    {{ tag.name }}
-                </a>
-                {% if not forloop.last %} {% endif %}
-            {% endfor %}
-        </p>
-    {% endif %}
-    
-    <!-- Author actions -->
-    {% if user == post.author %}
-        <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
-            <a href="{% url 'blog:post_edit' post.slug %}" style="background: #3498db; color: white; padding: 0.4rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">
-                Edit Post
-            </a>
-            <a href="{% url 'blog:post_delete' post.slug %}" style="background: #e74c3c; color: white; padding: 0.4rem 1rem; border-radius: 4px; text-decoration: none; font-size: 0.9rem;">
-                Delete Post
-            </a>
-        </div>
-    {% endif %}
-</div>
-
-<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
-    <!-- Main Content -->
-    <div class="content">
-        {% if post.featured_image %}
-            <div style="margin-bottom: 2rem;">
-                <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" style="max-width: 100%; border-radius: 8px;">
-            </div>
-        {% endif %}
-        
-        <div style="line-height: 1.8;">
-            {{ post.content|linebreaks }}
-        </div>
-        
-        <!-- Comments section -->
-        <div style="margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #eee;">
-            <h3>Comments ({{ comments|length }})</h3>
-            
-            {% for comment in comments %}
-                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-                    <p><strong>{{ comment.author.get_full_name|default:comment.author.username }}</strong>
-                    <span style="color: #7f8c8d; font-size: 0.9rem;">— {{ comment.created_at|date:"F j, Y g:i a" }}</span></p>
-                    <p>{{ comment.content|linebreaks }}</p>
-                </div>
-            {% empty %}
-                <p style="color: #7f8c8d;">No comments yet. Be the first to comment!</p>
-            {% endfor %}
-            
-            <!-- Comment form -->
-            {% if user.is_authenticated %}
-                <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #eee;">
-                    <h4>Add a Comment</h4>
-                    <form method="post" action="{% url 'blog:comment_create' post.slug %}">
-                        {% csrf_token %}
-                        <div style="margin-bottom: 1rem;">
-                            <textarea name="content" rows="4" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;" placeholder="Write your comment here..."></textarea>
-                        </div>
-                        <button type="submit" style="background: #3498db; color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 4px; cursor: pointer;">
-                            Submit Comment
-                        </button>
-                    </form>
-                </div>
-            {% else %}
-                <p style="margin-top: 1rem; color: #7f8c8d;">
-                    <a href="{% url 'login' %}" style="color: #3498db;">Log in</a> to leave a comment.
-                </p>
-            {% endif %}
-        </div>
-    </div>
-    
-    <!-- Sidebar -->
-    <div>
-        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-            <h3 style="margin-bottom: 1rem;">Recent Posts</h3>
-            {% if recent_posts %}
-                <ul style="list-style: none; padding: 0;">
-                    {% for recent in recent_posts %}
-                        <li style="margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid #eee;">
-                            <a href="{{ recent.get_absolute_url }}" style="color: #2c3e50; text-decoration: none;">
-                                {{ recent.title }}
-                            </a>
-                            <br>
-                            <small style="color: #7f8c8d;">{{ recent.published_at|date:"F j, Y" }}</small>
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p style="color: #7f8c8d;">No recent posts.</p>
-            {% endif %}
-        </div>
-        
-        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
-            <h3 style="margin-bottom: 1rem;">About</h3>
-            <p style="color: #7f8c8d; font-size: 0.9rem;">
-                A Django blog built from scratch as part of the
-                Mastering Django 6 tutorial series.
-            </p>
-            <p style="margin-top: 0.5rem;">
-                <a href="{% url 'blog:about' %}" style="color: #3498db; text-decoration: none;">
-                    Learn more →
-                </a>
-            </p>
-        </div>
-    </div>
-</div>
-
-<!-- Back link -->
-<div style="margin-top: 1.5rem;">
-    <a href="{% url 'blog:blog_list' %}" style="color: #3498db; text-decoration: none;">
-        ← Back to all posts
-    </a>
-</div>
-{% endblock %}
-```
-
----
-
-## Target 4.4: Refactoring CRUD Views to Class-Based
-
-### The Concept
-
-Now we'll refactor our CRUD views to use Django's generic editing views. These views handle forms, validation, and saving automatically.
-
-### The Implementation
-
-**File: `blog/views.py`** (replace CRUD functions with class-based views)
-
-```python
-class PostCreateView(LoginRequiredMixin, CreateView):
-    """
-    Class-based view for creating new blog posts.
-    
-    LoginRequiredMixin ensures only authenticated users can access.
-    """
-    model = Post
-    form_class = PostForm
-    template_name = 'blog/post_form.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Create New Post'
-        context['submit_text'] = 'Create Post'
-        context['year'] = timezone.now().year
-        return context
-    
-    def form_valid(self, form):
-        """
-        Set the author to the current user before saving.
-        """
-        form.instance.author = self.request.user
-        
-        # If status is published, set published_at
-        if form.instance.status == Post.Status.PUBLISHED:
-            form.instance.published_at = timezone.now()
-        
-        # Save the form
-        response = super().form_valid(form)
-        
-        # Show success message
-        messages.success(self.request, f'Your post "{form.instance.title}" has been created successfully!')
-        
-        return response
-    
-    def get_success_url(self):
-        """
-        Redirect to the post detail page after successful creation.
-        """
-        return reverse_lazy('blog:post_detail', kwargs={'slug': self.object.slug})
-
-
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    """
-    Class-based view for editing blog posts.
-    
-    UserPassesTestMixin ensures the user is the author of the post.
-    """
-    model = Post
-    form_class = PostForm
-    template_name = 'blog/post_form.html'
-    slug_field = 'slug'
-    slug_url_kwarg = 'slug'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = f'Edit Post: {self.object.title}'
-        context['submit_text'] = 'Update Post'
-        context['year'] = timezone.now().year
-        
-        # Pre-populate tags_input
-        if self.object.tags.exists():
-            tags_list = [tag.name for tag in self.object.tags.all()]
-            context['form'].fields['tags_input'].initial = ', '.join(tags_list)
-        
-        return context
-    
-    def form_valid(self, form):
-        """
-        Handle status changes and save.
-        """
-        # Check if status changed to published
-        old_status = self.get_object().status
-        new_status = form.instance.status
-        
-        if new_status == Post.Status.PUBLISHED and old_status != Post.Status.PUBLISHED:
-            form.instance.published_at = timezone.now()
-        
-        # Save the form
-        response = super().form_valid(form)
-        
-        # Show success message
-        messages.success(self.request, f'Your post "{form.instance.title}" has been updated!')
-        
-        return response
-    
-    def test_func(self):
-        """
-        Check that the current user is the author of the post.
-        """
-        post = self.get_object()
-        return self.request.user == post.author
-    
-    def get_success_url(self):
-        return reverse_lazy('blog:post_detail', kwargs={'slug': self.object.slug})
-
-
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    """
-    Class-based view for deleting blog posts.
-    """
-    model = Post
-    template_name = 'blog/post_confirm_delete.html'
-    slug_field = 'slug'
-    slug_url_kwarg = 'slug'
-    success_url = reverse_lazy('blog:blog_list')
-    
-    def test_func(self):
-        """
-        Check that the current user is the author of the post.
-        """
-        post = self.get_object()
-        return self.request.user == post.author
-    
-    def delete(self, request, *args, **kwargs):
-        """
-        Override delete to add a success message.
-        """
-        post = self.get_object()
-        post_title = post.title
-        response = super().delete(request, *args, **kwargs)
-        messages.success(request, f'Your post "{post_title}" has been deleted.')
-        return response
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['year'] = timezone.now().year
-        return context
-```
-
----
-
-## Target 4.5: Refactoring Home Page to Class-Based
-
-### The Concept
-
-Even the home page can benefit from a class-based approach, though it's simpler than the others.
-
-### The Implementation
-
-**File: `blog/views.py`** (add TemplateView for home)
-
-```python
-from django.views.generic import TemplateView
-
-class HomeView(TemplateView):
-    """
-    Class-based view for the homepage.
-    """
-    template_name = 'blog/home.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        
-        # Get recent posts
-        recent_posts = Post.objects.filter(
-            status=Post.Status.PUBLISHED,
-            published_at__lte=timezone.now()
-        ).order_by('-published_at')[:5]
-        
-        # Get categories with post counts
-        categories = Category.objects.annotate(
-            post_count=Count('posts', filter=Q(posts__status=Post.Status.PUBLISHED))
-        ).filter(post_count__gt=0)
-        
-        context['recent_posts'] = recent_posts
-        context['categories'] = categories
-        context['year'] = timezone.now().year
-        
-        return context
-```
-
-Now update the URLs to use the class-based views:
-
-**File: `blog/urls.py`** (update)
-
-```python
-from django.urls import path
-from . import views
-
-app_name = 'blog'
-
-urlpatterns = [
-    # Public views (class-based)
-    path('', views.HomeView.as_view(), name='home'),
-    path('about/', views.about, name='about'),  # Keep function-based for now
-    path('blog/', views.PostListView.as_view(), name='blog_list'),
-    path('blog/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
-    path('category/<slug:slug>/', views.category_detail, name='category_detail'),  # Keep function-based
-    path('tag/<slug:slug>/', views.tag_detail, name='tag_detail'),  # Keep function-based
-    
-    # CRUD views (class-based)
-    path('post/create/', views.PostCreateView.as_view(), name='post_create'),
-    path('post/<slug:slug>/edit/', views.PostUpdateView.as_view(), name='post_edit'),
-    path('post/<slug:slug>/delete/', views.PostDeleteView.as_view(), name='post_delete'),
-    
-    # Comment views (function-based)
-    path('post/<slug:post_slug>/comment/', views.comment_create, name='comment_create'),
-    
-    # Authentication views
-    path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('register/', views.register, name='register'),
-    
-    # Password management
-    path('password-reset/', 
-         auth_views.PasswordResetView.as_view(), 
-         name='password_reset'),
-    path('password-reset/done/', 
-         auth_views.PasswordResetDoneView.as_view(), 
-         name='password_reset_done'),
-    path('password-reset/<uidb64>/<token>/', 
-         auth_views.PasswordResetConfirmView.as_view(), 
-         name='password_reset_confirm'),
-    path('password-reset/complete/', 
-         auth_views.PasswordResetCompleteView.as_view(), 
-         name='password_reset_complete'),
-]
-```
-
----
-
-## Target 4.6: Understanding Mixins and Method Order
+## Target 4.8: Understanding Mixins and Method Order
 
 ### The Concept
 
@@ -827,7 +689,7 @@ When using multiple mixins, the order matters. The general rule:
 1. **Put mixins first**
 2. **Then put the base view class**
 
-### The Implementation Example
+### Implementation Example
 
 ```python
 # Correct order
@@ -852,65 +714,15 @@ class PostUpdateView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
 
 ---
 
-## Target 4.7: Deep Dive into Pagination
-
-### The Concept
-
-**Pagination** splits a large list of items across multiple pages. Django's `Paginator` class handles this for you.
-
-### How Pagination Works
-
-```
-All Posts (100)
-    │
-    ▼
-Paginator (10 per page)
-    │
-    ├── Page 1 (items 1-10)
-    ├── Page 2 (items 11-20)
-    ├── Page 3 (items 21-30)
-    ├── Page 4 (items 31-40)
-    └── ...
-```
-
-### Manual Pagination (if you need it)
-
-```python
-from django.core.paginator import Paginator
-
-def my_view(request):
-    posts = Post.objects.all()
-    paginator = Paginator(posts, 10)  # Show 10 per page
-    
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    
-    return render(request, 'template.html', {'page_obj': page_obj})
-```
-
-### Pagination in Templates
-
-```html
-{% if page_obj.has_previous %}
-    <a href="?page=1">&laquo; First</a>
-    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
-{% endif %}
-
-<span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-
-{% if page_obj.has_next %}
-    <a href="?page={{ page_obj.next_page_number }}">Next</a>
-    <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-{% endif %}
-```
-
----
-
 ## The Verification
 
 Let's test our refactored application:
 
 ### Step 1: Test the Blog List with Filters
+
+```bash
+python manage.py runserver
+```
 
 1. Visit **http://127.0.0.1:8000/blog/**
 2. Try the search: type "Django" and click "Apply Filters"
@@ -947,65 +759,7 @@ Let's test our refactored application:
 
 ---
 
-## Summary: Function-Based vs Class-Based Comparison
-
-| View | Function-Based | Class-Based |
-|------|---------------|-------------|
-| **Home** | `def home(request):` | `class HomeView(TemplateView):` |
-| **Blog List** | `def blog_list(request):` | `class PostListView(ListView):` |
-| **Post Detail** | `def post_detail(request, slug):` | `class PostDetailView(DetailView):` |
-| **Post Create** | `def post_create(request):` | `class PostCreateView(CreateView):` |
-| **Post Edit** | `def post_edit(request, slug):` | `class PostUpdateView(UpdateView):` |
-| **Post Delete** | `def post_delete(request, slug):` | `class PostDeleteView(DeleteView):` |
-
----
-
-## Common Errors and Troubleshooting
-
-### Error: "AttributeError: 'PostListView' object has no attribute 'paginator'"
-**Cause**: Missing `paginate_by` attribute
-**Fix**: Add `paginate_by = 10` to the view
-
-### Error: "Reverse for 'post_detail' not found"
-**Cause**: Missing `get_success_url` or `get_absolute_url`
-**Fix**: Define `get_success_url()` in the view or `get_absolute_url()` in the model
-
-### Error: "You don't have permission to edit this post"
-**Cause**: `UserPassesTestMixin` test failed
-**Fix**: Check that `test_func()` correctly checks permissions
-
-### Error: "Page not found (404)"
-**Cause**: Slug doesn't exist or post is not published
-**Fix**: Check the query in `get_queryset()` is filtering correctly
-
----
-
-## Challenge: Extend the Class-Based Views
-
-### Challenge 1: Add Author Statistics
-Add a method to `PostListView` that calculates:
-- Total number of posts by each author
-- Average comments per post
-- Most recent post date
-
-### Challenge 2: Create a Comment Moderation View
-Create a class-based view for moderating comments:
-- Show comments pending approval
-- Allow bulk approve/delete actions
-- Use `UserPassesTestMixin` to restrict to staff or post authors
-
-### Challenge 3: Add a Search Results Page
-Create a dedicated search results page that:
-- Shows comprehensive search results
-- Highlights matching text
-- Includes advanced search options
-
-### Challenge 4: Implement AJAX Filtering
-Add JavaScript to load filtered results without page refresh.
-
----
-
-## What You've Learned in Part 4
+## Summary: What We've Accomplished
 
 ### ✅ Skills Acquired
 - Understanding class-based views
@@ -1023,6 +777,61 @@ Add JavaScript to load filtered results without page refresh.
 - Pagination for large post lists
 - Clean, maintainable class-based views
 - Consistent message handling
+
+---
+
+## Quick Reference: Class-Based View Patterns
+
+```python
+# ListView - Display a list of objects
+class MyListView(ListView):
+    model = MyModel
+    template_name = 'app/list.html'
+    context_object_name = 'objects'
+    paginate_by = 10
+    
+    def get_queryset(self):
+        return MyModel.objects.filter(status='active')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['extra'] = 'Extra data'
+        return context
+
+# DetailView - Display a single object
+class MyDetailView(DetailView):
+    model = MyModel
+    template_name = 'app/detail.html'
+    slug_field = 'slug'
+    slug_url_kwarg = 'slug'
+
+# CreateView - Create a new object
+class MyCreateView(LoginRequiredMixin, CreateView):
+    model = MyModel
+    form_class = MyForm
+    template_name = 'app/form.html'
+    success_url = reverse_lazy('app:list')
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+# UpdateView - Edit an existing object
+class MyUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = MyModel
+    form_class = MyForm
+    template_name = 'app/form.html'
+    
+    def test_func(self):
+        obj = self.get_object()
+        return self.request.user == obj.author
+
+# DeleteView - Delete an object
+class MyDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = MyModel
+    template_name = 'app/confirm_delete.html'
+    success_url = reverse_lazy('app:list')
+```
 
 ---
 
