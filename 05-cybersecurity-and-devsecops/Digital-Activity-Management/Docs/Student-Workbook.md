@@ -1,7 +1,5 @@
 # DAM Tutorial Series: Complete Student Workbook
 
-**[STARTING: Student Workbook - Complete DAM Tutorial Series]**
-
 Welcome to the DAM Tutorial Student Workbook! This comprehensive workbook is designed to accompany the slide deck and tutorial series. It provides structured exercises, hands-on labs, code templates, verification checkpoints, and self-assessment questions for every part of the series.
 
 ---
