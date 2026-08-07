@@ -22,7 +22,7 @@ Let's begin!
 
 **Models** are Python classes that represent database tables. Each model class maps to a database table, and each attribute of the class maps to a database column.
 
-Think of models like blueprint for your data:
+Think of models like blueprints for your data:
 
 ```
 Model (Python Class)    →    Database Table
@@ -1476,83 +1476,6 @@ for post in posts:
 
 ---
 
-## Database Schema Visualization
-
-Here's what your database tables look like after migration:
-
-```sql
--- Django's built-in auth_user table
-CREATE TABLE auth_user (
-    id INTEGER PRIMARY KEY,
-    username VARCHAR(150) UNIQUE,
-    password VARCHAR(128),
-    email VARCHAR(254),
-    first_name VARCHAR(150),
-    last_name VARCHAR(150),
-    is_active BOOLEAN,
-    is_staff BOOLEAN,
-    is_superuser BOOLEAN,
-    date_joined DATETIME,
-    last_login DATETIME
-);
-
--- Our blog_category table
-CREATE TABLE blog_category (
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(100) UNIQUE,
-    slug VARCHAR(120) UNIQUE,
-    description TEXT,
-    created_at DATETIME,
-    updated_at DATETIME
-);
-
--- Our blog_tag table
-CREATE TABLE blog_tag (
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(50) UNIQUE,
-    slug VARCHAR(60) UNIQUE,
-    created_at DATETIME
-);
-
--- Our blog_post table
-CREATE TABLE blog_post (
-    id INTEGER PRIMARY KEY,
-    title VARCHAR(200),
-    slug VARCHAR(220) UNIQUE,
-    content TEXT,
-    excerpt TEXT,
-    status VARCHAR(10),
-    created_at DATETIME,
-    updated_at DATETIME,
-    published_at DATETIME,
-    meta_description VARCHAR(160),
-    meta_keywords VARCHAR(255),
-    featured_image VARCHAR(100),
-    author_id INTEGER REFERENCES auth_user(id),
-    category_id INTEGER REFERENCES blog_category(id)
-);
-
--- Many-to-many table for Post-Tag relationship
-CREATE TABLE blog_post_tags (
-    id INTEGER PRIMARY KEY,
-    post_id INTEGER REFERENCES blog_post(id),
-    tag_id INTEGER REFERENCES blog_tag(id)
-);
-
--- Our blog_comment table
-CREATE TABLE blog_comment (
-    id INTEGER PRIMARY KEY,
-    content TEXT,
-    is_approved BOOLEAN,
-    created_at DATETIME,
-    updated_at DATETIME,
-    post_id INTEGER REFERENCES blog_post(id),
-    author_id INTEGER REFERENCES auth_user(id)
-);
-```
-
----
-
 ## Common Errors and Troubleshooting
 
 ### Error: "OperationalError: no such table: blog_post"
@@ -1617,25 +1540,6 @@ Add a `deleted_at` DateTimeField (null=True) and add a custom manager that exclu
 - Dynamic views that query the database
 - Templates that display real data
 - Category, tag, and post detail pages
-
----
-
-## What's Coming in Part 3
-
-In Part 3, we'll add:
-- Forms for creating and editing posts
-- CRUD operations (Create, Read, Update, Delete)
-- User authentication
-- CSRF protection
-- File uploads (images)
-
-Your blog will become interactive — users will be able to create content through the web interface!
-
----
-
-**[GENERATED: Part 2 — Models, Database Design, ORM, and Django Admin]**
-
-**[STARTING: Part 3 — Templates, Static Files, Forms, and CRUD]**
 
 ---
 
