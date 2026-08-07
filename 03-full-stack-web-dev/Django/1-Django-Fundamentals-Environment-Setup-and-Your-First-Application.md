@@ -1,4 +1,4 @@
-# Phase 1, Part 1: Django Fundamentals, Environment Setup, and Your First Application
+# Part 1: Django Fundamentals, Environment Setup, and Your First Application
 
 ## Welcome to Part 1!
 
@@ -841,69 +841,6 @@ If you see the pages with proper styling, congratulations! You've built a functi
 
 ---
 
-## Target 1.8: Adding a Reusable Navigation Include
-
-### The Concept
-
-Right now, our navigation is in the base template. But as your site grows, you might want to include the navigation in multiple places or make it more modular. We'll create a reusable **include** template.
-
-### The Implementation
-
-Create a new directory for reusable template components:
-
-```bash
-mkdir -p blog/templates/blog/includes
-```
-
-**File: `blog/templates/blog/includes/navigation.html`**
-
-```html
-<!-- blog/templates/blog/includes/navigation.html -->
-<nav>
-    <div class="container">
-        <a href="{% url 'blog:home' %}" class="nav-brand">Django Blog</a>
-        <ul class="nav-links">
-            <li><a href="{% url 'blog:home' %}">Home</a></li>
-            <li><a href="{% url 'blog:blog_list' %}">Blog</a></li>
-            <li><a href="{% url 'blog:about' %}">About</a></li>
-        </ul>
-    </div>
-</nav>
-```
-
-Now update the base template to use this include:
-
-**File: `blog/templates/blog/base.html`** (update the navigation section)
-
-```html
-<!-- ... all the head section stays the same ... -->
-<body>
-    <!-- Include the navigation component -->
-    {% include 'blog/includes/navigation.html' %}
-    
-    <!-- Main Content -->
-    <main>
-        <div class="container">
-            {% block content %}
-            <!-- This is where page-specific content goes -->
-            {% endblock %}
-        </div>
-    </main>
-    
-    <!-- ... footer stays the same ... -->
-</body>
-</html>
-```
-
-The `{% include %}` tag inserts the contents of another template at this location. This is great for:
-- Navigation bars
-- Footer sections
-- Sidebars
-- Reusable form fields
-- Any component that appears in multiple places
-
----
-
 ## Understanding Template Tags and Filters
 
 ### The Concept
@@ -942,288 +879,6 @@ Django templates use **tags** and **filters** to add logic and formatting to you
 
 ---
 
-## Target 1.9: Adding a Custom Context Processor (Optional Preview)
-
-### The Concept
-
-**Context processors** automatically add variables to every template's context. Instead of passing `year` to every view, we can add it globally.
-
-We'll set this up now (you'll understand it better in Part 6).
-
-### The Implementation
-
-**File: `blog/context_processors.py`** (create new file)
-
-```python
-from datetime import datetime
-
-def global_context(request):
-    """
-    Add global variables to all templates.
-    This function runs for every request.
-    """
-    return {
-        'current_year': datetime.now().year,
-        'site_name': 'Django Blog',
-    }
-```
-
-**File: `config/settings.py`** (add the context processor)
-
-```python
-# config/settings.py
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                
-                # Add our custom context processor
-                'blog.context_processors.global_context',
-            ],
-        },
-    },
-]
-```
-
-Now you can use `{{ current_year }}` in any template without passing it in the view context!
-
----
-
-## Target 1.10: Adding CSS and Static Files
-
-### The Concept
-
-**Static files** are assets that don't change dynamically — CSS, JavaScript, images. Django has a system for managing these.
-
-### The Implementation
-
-Create a static directory:
-
-```bash
-mkdir -p blog/static/blog/css
-mkdir -p blog/static/blog/js
-mkdir -p blog/static/blog/images
-```
-
-**File: `blog/static/blog/css/style.css`**
-
-```css
-/* blog/static/blog/css/style.css */
-
-/* Root variables for theming */
-:root {
-    --primary-color: #2c3e50;
-    --secondary-color: #3498db;
-    --text-color: #333;
-    --background-color: #f8f9fa;
-    --white: #ffffff;
-    --light-gray: #ecf0f1;
-    --dark-gray: #7f8c8d;
-    --border-radius: 8px;
-    --shadow: 0 2px 4px rgba(0,0,0,0.1);
-    --transition: all 0.3s ease;
-}
-
-/* Base reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background-color: var(--background-color);
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Navigation */
-nav {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 1rem 0;
-    margin-bottom: 2rem;
-    box-shadow: var(--shadow);
-}
-
-nav .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.nav-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    color: var(--white);
-    transition: var(--transition);
-}
-
-.nav-brand:hover {
-    color: var(--secondary-color);
-}
-
-.nav-links {
-    display: flex;
-    gap: 1.5rem;
-    list-style: none;
-}
-
-.nav-links a {
-    color: var(--light-gray);
-    text-decoration: none;
-    padding: 0.5rem 0;
-    transition: var(--transition);
-    border-bottom: 2px solid transparent;
-}
-
-.nav-links a:hover {
-    color: var(--white);
-    border-bottom-color: var(--secondary-color);
-}
-
-/* Main content */
-main {
-    min-height: 70vh;
-    padding: 2rem 0;
-}
-
-/* Page header */
-.page-header {
-    margin-bottom: 2rem;
-}
-
-.page-header h1 {
-    font-size: 2.5rem;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.page-header .subtitle {
-    color: var(--dark-gray);
-    font-size: 1.1rem;
-}
-
-/* Content cards */
-.content {
-    background: var(--white);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-}
-
-.content h2 {
-    color: var(--primary-color);
-    margin-bottom: 1rem;
-}
-
-.content h3 {
-    color: var(--primary-color);
-    margin-bottom: 0.75rem;
-}
-
-.content ul {
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-.content ul li {
-    margin-bottom: 0.5rem;
-}
-
-/* Footer */
-footer {
-    background-color: var(--primary-color);
-    color: var(--light-gray);
-    text-align: center;
-    padding: 1.5rem 0;
-    margin-top: 3rem;
-}
-
-footer a {
-    color: var(--secondary-color);
-    text-decoration: none;
-}
-
-footer a:hover {
-    text-decoration: underline;
-}
-
-/* Utility classes */
-.text-center {
-    text-align: center;
-}
-
-.mt-1 { margin-top: 1rem; }
-.mt-2 { margin-top: 2rem; }
-.mb-1 { margin-bottom: 1rem; }
-.mb-2 { margin-bottom: 2rem; }
-
-/* Responsive design */
-@media (max-width: 768px) {
-    nav .container {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .page-header h1 {
-        font-size: 2rem;
-    }
-    
-    .content {
-        padding: 1rem;
-    }
-}
-```
-
-Now update your base template to load static files:
-
-**File: `blog/templates/blog/base.html`** (add at the top)
-
-```html
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Django Blog{% endblock %}</title>
-    
-    <!-- Link to our CSS file -->
-    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
-</head>
-<body>
-    <!-- ... rest remains the same ... -->
-</body>
-</html>
-```
-
-Now remove the `<style>` block from the base template — the external CSS file handles all styling.
-
----
-
 ## The Complete Project So Far
 
 Here's what your project structure looks like after Part 1:
@@ -1248,17 +903,10 @@ django_blog_project/
     │       ├── base.html
     │       ├── home.html
     │       ├── about.html
-    │       ├── blog_list.html
-    │       └── includes/
-    │           └── navigation.html
-    ├── static/
-    │   └── blog/
-    │       └── css/
-    │           └── style.css
+    │       └── blog_list.html
     ├── __init__.py
     ├── admin.py
     ├── apps.py
-    ├── context_processors.py
     ├── models.py
     ├── tests.py
     ├── urls.py
@@ -1267,7 +915,7 @@ django_blog_project/
 
 ---
 
-## The Verification
+## The Verification - Final Comprehensive Test
 
 Let's do a final comprehensive test:
 
@@ -1285,77 +933,6 @@ Now visit each page and verify:
 5. **Styling** → Pages have clean, professional styling with proper colors and spacing
 
 If everything works, congratulations! You've built your first Django website.
-
----
-
-## Deep Dive: Understanding Django's Request-Response Cycle
-
-Now that you've built something, let's understand what actually happens when you visit a page:
-
-### 1. Browser Sends Request
-```
-GET /about/ HTTP/1.1
-Host: 127.0.0.1:8000
-```
-
-### 2. Django Receives Request
-- The development server (runserver) receives the request
-- It creates an `HttpRequest` object with all request data
-
-### 3. URL Resolution
-Django goes through the `urlpatterns`:
-
-```python
-# config/urls.py
-path('', include('blog.urls'))  # Matches the root
-
-# blog/urls.py
-path('about/', views.about, name='about')  # Matches /about/
-```
-
-### 4. View Execution
-The `about` view function runs:
-
-```python
-def about(request):
-    context = {
-        'page_title': 'About This Blog',
-        'description': 'This blog is built using Django 6...',
-        'technologies': ['Django 6', 'Python 3.14', 'HTML5', 'CSS3'],
-        'year': 2026,
-    }
-    return render(request, 'blog/about.html', context)
-```
-
-### 5. Template Rendering
-- Django finds `blog/templates/blog/about.html`
-- It extends `blog/templates/blog/base.html`
-- It merges the context data
-- Template tags like `{% for tech in technologies %}` are processed
-
-### 6. Response Generation
-The rendered HTML is wrapped in an `HttpResponse` object:
-
-```html
-<!DOCTYPE html>
-<html>
-    <head><title>About This Blog — Django Blog</title></head>
-    <body>
-        <h1>About This Blog</h1>
-        <ul>
-            <li>Django 6</li>
-            <li>Python 3.14</li>
-            <li>HTML5</li>
-            <li>CSS3</li>
-        </ul>
-    </body>
-</html>
-```
-
-### 7. Browser Receives and Renders
-- The browser receives the HTML
-- It loads the CSS from the static file
-- It displays the rendered page
 
 ---
 
@@ -1386,12 +963,9 @@ uv pip install django==6.0
 - URL names in `blog/urls.py` match template `{% url %}`
 - You're using the correct namespace (e.g., `blog:home`)
 
-### Error: Static files not loading (404)
-**Cause**: Static file not found or not loaded
-**Fix**:
-- Check you have `{% load static %}` at the top
-- Verify the file path: `blog/static/blog/css/style.css`
-- Run `python manage.py collectstatic` (though not needed in development)
+### Error: "AttributeError: module 'blog.views' has no attribute 'home'"
+**Cause**: View function not defined or has a typo
+**Fix**: Check that the view function name matches what's in `blog/urls.py`
 
 ---
 
@@ -1412,19 +986,16 @@ Create a "Contact" page:
 3. Use `{% include 'blog/includes/footer.html' %}` in base.html
 
 ### Challenge 3: Customize the Styling
-1. Change the primary color in `style.css`
+1. Change the primary color in the `<style>` block
 2. Add a background gradient
 3. Add hover effects to navigation items
 
 ### Challenge 4: Add a Current Year Context Processor
-1. Create a context processor that adds the current year
-2. Use `{{ current_year }}` in the footer instead of hardcoding it
+Instead of passing `year` to every view, create a context processor that adds the current year globally.
 
 ---
 
 ## What You've Learned in Part 1
-
-Congratulations! You've accomplished a lot:
 
 ### ✅ Skills Acquired
 - Setting up Python virtual environments
@@ -1434,44 +1005,14 @@ Congratulations! You've accomplished a lot:
 - Writing function-based views
 - Creating templates with template inheritance
 - Configuring URLs at project and app level
-- Working with static files (CSS)
 - Understanding the request/response cycle
-- Using `{% include %}` for reusable components
+- Using `{% url %}` for dynamic URL generation
 
 ### ✅ What You've Built
 - A working Django project with proper structure
 - Three pages (home, about, blog) with navigation
 - A shared base template with inheritance
 - Professional CSS styling
-- A reusable navigation component
-
----
-
-## What's Coming in Part 2
-
-In Part 2, we'll add real database integration:
-
-- Designing database models for our blog
-- Creating and running migrations
-- Using Django's ORM to work with data
-- Setting up Django Admin for easy data management
-- Displaying database content in templates
-
-Your static blog will become a dynamic, database-driven application.
-
----
-
-## Ready for Part 2?
-
-You've built a strong foundation. Take a moment to appreciate what you've accomplished — you've gone from zero to a working Django website in one part!
-
-When you're ready, proceed to Part 2, where we'll bring your blog to life with real data.
-
----
-
-**[GENERATED: Part 1 — Django Fundamentals, Environment Setup, and Your First Application]**
-
-**[STARTING: Part 2 — Models, Database Design, ORM, and Django Admin]**
 
 ---
 
@@ -1526,3 +1067,9 @@ python manage.py check              # Verify project
 ```
 
 ---
+
+## Ready for Part 2?
+
+You've built a strong foundation. Take a moment to appreciate what you've accomplished — you've gone from zero to a working Django website in one part!
+
+When you're ready, proceed to Part 2, where we'll bring your blog to life with real data.
